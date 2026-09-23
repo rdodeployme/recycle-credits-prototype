@@ -1,0 +1,1380 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#123A36">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Recycle Credits">
+<title>Recycle Credits</title>
+<meta name="description" content="Recycle Credits pilot preview — earn credits for verified recycling, spend them in store.">
+</head>
+<body>
+<title>Recycle Credits</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --bg:#EEF4F1; --surface:#FFFFFF; --surface-2:#E3EDE8; --surface-3:#D6E4DD;
+  --ink:#14302C; --ink-2:#4A6660; --ink-3:#7A928C; --line:#CFDDD6;
+  --accent:#3E8A2E; --accent-ink:#0F2A12; --accent-soft:#DDF2C9; --lime:#83C64A; --lime-2:#B9E675;
+  --teal:#123A36; --teal-2:#1B4A44; --teal-ink:#E6F2EC; --teal-muted:#AFC5BE;
+  --ok:#2F7A3A; --ok-bg:#DFF2E0; --warn:#9A6A12; --warn-bg:#F7EBCF; --bad:#B5432E; --bad-bg:#F7DDD6; --info:#2B5C8A; --info-bg:#DCE8F5;
+  --shadow:0 1px 2px rgba(20,48,44,.06),0 10px 30px -14px rgba(20,48,44,.25);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0C1917; --surface:#142623; --surface-2:#1B322E; --surface-3:#234039;
+  --ink:#E4EFEA; --ink-2:#A3BBB3; --ink-3:#6F8983; --line:#2A4741;
+  --accent:#A6DA6B; --accent-ink:#0F2A12; --accent-soft:#213A26; --lime:#83C64A; --lime-2:#B9E675;
+  --teal:#0B2321; --teal-2:#173C37; --teal-ink:#E6F2EC; --teal-muted:#8FA9A1;
+  --ok:#8FD08C; --ok-bg:#1E3A26; --warn:#E6C06A; --warn-bg:#3E3418; --bad:#F0967F; --bad-bg:#46231B; --info:#8FB8E6; --info-bg:#1D3348;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 30px -14px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --bg:#0C1917; --surface:#142623; --surface-2:#1B322E; --surface-3:#234039;
+  --ink:#E4EFEA; --ink-2:#A3BBB3; --ink-3:#6F8983; --line:#2A4741;
+  --accent:#A6DA6B; --accent-ink:#0F2A12; --accent-soft:#213A26; --lime:#83C64A; --lime-2:#B9E675;
+  --teal:#0B2321; --teal-2:#173C37; --teal-ink:#E6F2EC; --teal-muted:#8FA9A1;
+  --ok:#8FD08C; --ok-bg:#1E3A26; --warn:#E6C06A; --warn-bg:#3E3418; --bad:#F0967F; --bad-bg:#46231B; --info:#8FB8E6; --info-bg:#1D3348;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 30px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.25rem;font-weight:700}
+h3{font-size:1rem;font-weight:700}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.muted{color:var(--ink-2)}.small{font-size:.85rem}.tiny{font-size:.75rem}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+
+/* app shell */
+.shell{position:sticky;top:0;z-index:20;background:var(--teal);color:var(--teal-ink);border-bottom:1px solid rgba(255,255,255,.08)}
+.shell .in{max-width:1180px;margin:0 auto;padding:.55rem 1rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.brand{background:none;border:0;color:inherit;cursor:pointer;padding:0;display:flex;align-items:center;gap:.5rem;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;letter-spacing:-.01em;font-size:1.05rem}
+.brand .dot{width:.7rem;height:.7rem;border-radius:50%;background:var(--lime)}
+.brand .tag{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime-2);border:1px solid rgba(185,230,117,.4);border-radius:999px;padding:.1rem .5rem;font-weight:500}
+.roles{display:flex;gap:.25rem;margin-left:auto;background:rgba(0,0,0,.25);border-radius:999px;padding:.2rem}
+.roles button{background:transparent;border:0;color:var(--teal-muted);padding:.35rem .85rem;border-radius:999px;cursor:pointer;font-weight:500;font-size:.88rem}
+.roles button[aria-pressed="true"]{background:var(--lime);color:var(--accent-ink);font-weight:600}
+.roles button:focus-visible{outline:2px solid var(--lime-2);outline-offset:1px}
+.shell .tools{display:flex;gap:.4rem;align-items:center}
+.shell .tools button{background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--teal-ink);border-radius:6px;padding:.3rem .6rem;cursor:pointer;font-size:.8rem}
+.shell .tools button:hover{background:rgba(255,255,255,.08)}
+.note{max-width:1180px;margin:0 auto;padding:.4rem 1rem 0;font-size:.78rem;color:var(--ink-3)}
+
+/* stage */
+.stage{max-width:1180px;margin:0 auto;padding:1rem}
+.phone{max-width:420px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;min-height:720px;display:flex;flex-direction:column;position:relative}
+.tablet{max-width:820px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;min-height:600px}
+.desk{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;min-height:600px;display:grid;grid-template-columns:200px minmax(0,1fr)}
+@media (max-width:760px){.desk{grid-template-columns:minmax(0,1fr)}}
+/* grid/flex children must be allowed to shrink below their content width, or wide tables push the whole view off-screen */
+.stack>*,.abody>*,.cbody>*,.wallet-body>*,.card>*,.row>*,form{min-width:0}
+.tw{max-width:100%}
+
+/* generic UI */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border:1px solid transparent;border-radius:10px;padding:.6rem 1rem;font-weight:600;cursor:pointer;background:var(--surface-2);color:var(--ink);min-height:44px;text-decoration:none}
+.btn:hover{filter:brightness(.97)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.anav button:focus-visible,.ctabs button:focus-visible,.wnav button:focus-visible,.cat:focus-visible,.qty button:focus-visible,.shell .tools button:focus-visible,#wtBar button:focus-visible,#wtStart button:focus-visible{outline:2px solid var(--lime);outline-offset:-2px}
+.btn.primary{background:var(--lime);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--lime-2);filter:none}
+.btn.ghost{background:transparent;border-color:var(--line)}
+.btn.danger{background:var(--bad-bg);color:var(--bad)}
+.btn.sm{min-height:34px;padding:.3rem .7rem;font-size:.85rem;border-radius:8px}
+.btn.big{min-height:56px;font-size:1.05rem;width:100%}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.field{display:grid;gap:.3rem}
+.field label{font-size:.85rem;font-weight:600}
+.field .hint{font-size:.78rem;color:var(--ink-3)}
+input[type=text],input[type=email],input[type=tel],input[type=number],input[type=date],input[type=password],select,textarea{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.6rem .75rem;min-height:44px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.check{display:flex;gap:.6rem;align-items:flex-start;font-size:.9rem}
+.check input{margin-top:.25rem;width:1.1rem;height:1.1rem}
+.pill{display:inline-flex;align-items:center;gap:.3rem;border-radius:999px;padding:.1rem .55rem;font-size:.7rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+.pill.ok{color:var(--ok);background:var(--ok-bg)}.pill.warn{color:var(--warn);background:var(--warn-bg)}.pill.bad{color:var(--bad);background:var(--bad-bg)}.pill.info{color:var(--info);background:var(--info-bg)}.pill.neutral{color:var(--ink-2);background:var(--surface-2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem}
+.card.soft{background:var(--surface-2);border-color:transparent}
+.stack{display:grid;gap:.75rem}
+.row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.row.between{justify-content:space-between}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+.toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:.6rem 1rem;border-radius:10px;font-size:.9rem;box-shadow:var(--shadow);z-index:50;max-width:90vw}
+.toast.bad{background:var(--bad)}
+.toast.ok{background:var(--accent)}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+td.wrap{white-space:normal}
+th{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:500;background:var(--surface-2);position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td input,td select{min-height:34px;padding:.25rem .5rem;border-radius:6px;width:auto;max-width:9rem}
+td input[type=number]{width:5.5rem}
+td input[type=text]{width:9rem}
+.abody th,.abody td{padding:.45rem .55rem}
+.empty{padding:1.5rem;text-align:center;color:var(--ink-3);font-size:.9rem}
+.kpi{display:grid;gap:.15rem;padding:.8rem .9rem;background:var(--surface-2);border-radius:10px}
+.kpi .v{font-family:"Bricolage Grotesque",sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.02em;line-height:1}
+.kpi .l{font-size:.75rem;color:var(--ink-2)}
+.kpi .s{font-size:.72rem;color:var(--ink-3)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem}
+
+/* member wallet */
+.wallet-top{background:var(--teal);color:var(--teal-ink);padding:1.2rem 1.2rem 1.4rem;display:grid;gap:.5rem}
+.wallet-top .who{display:flex;justify-content:space-between;align-items:center;gap:.5rem;font-size:.85rem;color:var(--teal-muted);white-space:nowrap}
+.wallet-top .who select{width:auto;background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.15);color:var(--teal-ink);min-height:32px;padding:.2rem .5rem;font-size:.8rem}
+.balance{font-family:"Bricolage Grotesque",sans-serif;font-size:3.4rem;font-weight:800;letter-spacing:-.03em;line-height:1;color:#FFFFFF}
+.balance small{font-size:1rem;font-weight:600;color:var(--lime-2);letter-spacing:0;margin-left:.3rem}
+.impact{font-size:.85rem;color:var(--teal-muted)}
+.wallet-body{padding:1rem 1.2rem 5.5rem;display:grid;gap:.9rem;flex:1}
+.wnav{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--line)}
+.wnav button{background:transparent;border:0;padding:.55rem .2rem .7rem;font-size:.68rem;color:var(--ink-3);cursor:pointer;display:grid;gap:.15rem;justify-items:center;font-weight:500}
+.wnav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.wnav button[aria-current="page"]{color:var(--accent)}
+.ledger-item{display:grid;grid-template-columns:1fr auto;gap:.2rem .8rem;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.ledger-item:last-child{border-bottom:0}
+.ledger-item .d{font-size:.78rem;color:var(--ink-3)}
+.ledger-item .amt{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.05rem}
+.ledger-item .amt.plus{color:var(--accent)}.ledger-item .amt.minus{color:var(--ink-2)}
+.qrbox{display:grid;justify-items:center;gap:.6rem;padding:1rem;background:#FFFFFF;border-radius:14px;border:1px solid var(--line)}
+.qrbox #qr img,.qrbox #qr canvas{display:block}
+.shortcode{font-family:"IBM Plex Mono",monospace;font-size:1.4rem;letter-spacing:.12em;font-weight:500;color:#14302C}
+.countdown{font-size:.8rem;color:#4A6660}
+.offer{display:grid;gap:.4rem;padding:.9rem 1rem;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.offer .t{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.05rem}
+.offer .cost{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;color:var(--accent);font-size:1.1rem}
+.code{font-family:"IBM Plex Mono",monospace;font-size:1.25rem;letter-spacing:.1em;font-weight:500;background:var(--surface-2);padding:.5rem .8rem;border-radius:8px;text-align:center}
+.nudge{background:var(--accent-soft);color:var(--ink);border-radius:10px;padding:.7rem .9rem;font-size:.88rem;display:flex;gap:.6rem;align-items:center}
+.nudge b{color:var(--accent)}
+
+/* counter */
+.chead{background:var(--teal);color:var(--teal-ink);padding:.9rem 1.2rem;display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap}
+.chead select{width:auto;background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.15);color:var(--teal-ink);min-height:36px;padding:.2rem .5rem;font-size:.85rem}
+.cbody{padding:1.2rem;display:grid;gap:1rem}
+.ctabs{display:flex;gap:.3rem;border-bottom:1px solid var(--line);padding:0 1.2rem}
+.ctabs button{background:transparent;border:0;border-bottom:2px solid transparent;padding:.7rem .8rem;cursor:pointer;color:var(--ink-2);font-weight:500}
+.ctabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--lime)}
+.member-strip{display:flex;justify-content:space-between;align-items:center;background:var(--accent-soft);border-radius:12px;padding:.8rem 1rem}
+.member-strip .n{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.3rem}
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.7rem}
+.cat{min-height:96px;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:.9rem;display:grid;align-content:space-between;cursor:pointer;text-align:left}
+.cat:hover{border-color:var(--lime)}
+.cat[aria-pressed="true"]{border-color:var(--lime);background:var(--accent-soft)}
+.cat .n{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.05rem}
+.cat .r{font-size:.8rem;color:var(--ink-2)}
+.qty{display:flex;align-items:center;gap:.5rem}
+.qty button{width:56px;height:56px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);font-size:1.4rem;cursor:pointer}
+.qty input{text-align:center;font-size:1.4rem;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;min-height:56px;max-width:140px}
+.result{border-radius:14px;padding:1.2rem;display:grid;gap:.4rem;text-align:center}
+.result.ok{background:var(--accent-soft)}.result.warn{background:var(--warn-bg)}.result.bad{background:var(--bad-bg)}
+.result .big{font-family:"Bricolage Grotesque",sans-serif;font-size:2rem;font-weight:800;letter-spacing:-.02em}
+
+/* admin */
+.anav{background:var(--surface-2);padding:.8rem;display:grid;gap:.15rem;align-content:start;border-right:1px solid var(--line)}
+.anav .eyebrow{padding:.4rem .6rem .2rem}
+.anav button{background:transparent;border:0;text-align:left;padding:.5rem .7rem;border-radius:8px;cursor:pointer;color:var(--ink-2);font-weight:500;display:flex;justify-content:space-between;align-items:center}
+.anav button[aria-current="page"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.anav .badge{font-family:"IBM Plex Mono",monospace;font-size:.68rem;background:var(--bad-bg);color:var(--bad);border-radius:999px;padding:.05rem .45rem}
+.abody{padding:1.2rem;display:grid;gap:1rem;align-content:start;min-width:0}
+.abody header{display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap}
+@media (max-width:760px){.anav{display:flex;flex-wrap:wrap;border-right:0;border-bottom:1px solid var(--line)}.anav .eyebrow{width:100%}}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.6rem;align-items:end}
+details{border:1px solid var(--line);border-radius:10px;padding:.6rem .9rem;background:var(--surface)}
+summary{cursor:pointer;font-weight:600}
+.legend-ph{font-size:.75rem;color:var(--warn)}
+@media (prefers-reduced-motion:no-preference){.toast{animation:pop .18s ease-out}@keyframes pop{from{opacity:0;transform:translate(-50%,6px)}to{opacity:1;transform:translate(-50%,0)}}}
+</style>
+
+<div class="shell"><div class="in">
+  <button type="button" class="brand" id="brandHome" title="Start screen"><span class="dot"></span>Recycle Credits <span class="tag">Pilot preview</span></button>
+  <div class="roles" role="tablist" aria-label="Switch view">
+    <button type="button" data-role="member" aria-pressed="true">Customer</button>
+    <button type="button" data-role="counter" aria-pressed="false">Site counter</button>
+    <button type="button" data-role="retailer" aria-pressed="false">Store</button>
+    <button type="button" data-role="admin" aria-pressed="false">Admin</button>
+  </div>
+  <div class="tools">
+    <button type="button" id="btnDemo" title="Load a month of sample activity">Sample data</button>
+    <button type="button" id="btnReset" title="Clear everything and start again">Start again</button>
+  </div>
+</div></div>
+<div class="note" id="shellNote">Pilot preview. Everything runs on this device and nothing is sent anywhere. Switch between customer, store, recycling site and admin above.</div>
+<div class="stage" id="stage"></div>
+<div id="toastHost"></div>
+<script>
+/* ===================== STORE ===================== */
+const KEY = 'rc-proto-v1';
+const APP_URL = 'https://app.recyclecredits.au';
+let S = null;
+
+function now(){ return Date.now(); }
+function todayKey(ts){ const d = new Date(ts||now()); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function fmtDate(ts){ return new Date(ts).toLocaleDateString('en-AU',{day:'numeric',month:'short'}); }
+function fmtDateTime(ts){ return new Date(ts).toLocaleString('en-AU',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}); }
+function fmtTime(ts){ return new Date(ts).toLocaleTimeString('en-AU',{hour:'numeric',minute:'2-digit'}); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function rnd(n, alphabet){ alphabet = alphabet || 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let out=''; const a = new Uint32Array(n); (window.crypto||{}).getRandomValues ? crypto.getRandomValues(a) : a.forEach((_,i)=>a[i]=Math.floor(Math.random()*1e9)); for(let i=0;i<n;i++) out += alphabet[a[i]%alphabet.length]; return out; }
+function uid(prefix){ S.seq = (S.seq||0)+1; return prefix + S.seq; }
+function money(n){ return '$'+Number(n).toLocaleString('en-AU',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+
+function blank(){
+  return {
+    seq: 0, members:[], tokens:[], facilities:[], operators:[], categories:[], campaigns:[], transactions:[], ledger:[], retailers:[], offers:[], redemptions:[], audit:[], spend:{},
+    settings:{ velocityPerCategoryPerDay:3, reviewThresholdRC:200, tokenMinutes:15, codeValidityDays:14, supportEmail:'hello@recyclecredits.au' },
+    ui:{ role:'member', memberId:null, wtab:'home', operatorId:null, ctab:'scan', retailerAuthed:null, atab:'metrics', counterMember:null, counterCat:null, counterQty:1 }
+  };
+}
+
+function seedBase(s){
+  s.facilities.push({ id:'F1', name:'North Geelong', suburb:'North Geelong', state:'VIC', accredited:true, dailyCap:2000, status:'active' });
+  s.operators.push({ id:'O1', name:'Counter staff 1', facilityId:'F1', role:'operator', active:true });
+  s.operators.push({ id:'O2', name:'Site manager', facilityId:'F1', role:'site_manager', active:true });
+  s.categories.push({ id:'C1', name:'Mattress', unit:'item', baseRC:20, minQty:1, maxQty:10, kgPerItem:25, active:true, placeholder:false });
+  s.categories.push({ id:'C2', name:'Whitegoods', unit:'item', baseRC:15, minQty:1, maxQty:5, kgPerItem:60, active:true, placeholder:true });
+  s.categories.push({ id:'C3', name:'Steel / scrap', unit:'kg', baseRC:0.5, minQty:2, maxQty:500, kgPerItem:1, active:true, placeholder:true });
+  s.categories.push({ id:'C4', name:'E-waste', unit:'item', baseRC:5, minQty:1, maxQty:20, kgPerItem:10, active:true, placeholder:true });
+  s.retailers.push({ id:'R1', name:'Harbour Bedding Co', contact:'store@harbourbedding.example', pin:'1234', active:true });
+  s.retailers.push({ id:'R2', name:'Northside Appliances', contact:'store@northsideappliances.example', pin:'5678', active:true });
+  s.offers.push({ id:'OF1', retailerId:'R1', title:'$100 off a new mattress', reward:'$100 off any mattress over $1,500', rcCost:100, minSpend:1500, costValue:100, terms:'One per customer. In store only. Show code at checkout.', validityDays:14, stockCap:50, stockUsed:0, active:true });
+  s.offers.push({ id:'OF2', retailerId:'R2', title:'$50 off a fridge', reward:'$50 off any fridge over $1,000', rcCost:100, minSpend:1000, costValue:50, terms:'One per customer. In store only.', validityDays:14, stockCap:50, stockUsed:0, active:true });
+  s.offers.push({ id:'OF3', retailerId:'R1', title:'Free delivery upgrade', reward:'Free delivery and old-mattress pickup with any purchase', rcCost:100, minSpend:0, costValue:0, terms:'With any mattress purchase.', validityDays:14, stockCap:0, stockUsed:0, active:true });
+  s.campaigns.push({ id:'CP1', name:'Sponsor 2× mattress month', sponsor:'Pilot sponsor (to be confirmed)', multiplier:2, categoryIds:['C1'], facilityIds:['F1'], starts:todayKey(), ends:todayKey(now()+30*86400000), bonusCap:2000, bonusUsed:0, active:false });
+  s.ui.operatorId = 'O1';
+}
+
+function load(){
+  try{ const raw = localStorage.getItem(KEY); if(raw){ S = JSON.parse(raw); if(!S.settings) throw 0; return; } }catch(e){}
+  S = blank(); seedBase(S); save();
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+/* ===================== LOOKUPS ===================== */
+const by = (arr,id)=>arr.find(x=>x.id===id);
+const member = id=>by(S.members,id);
+const category = id=>by(S.categories,id);
+const facility = id=>by(S.facilities,id);
+const operator = id=>by(S.operators,id);
+const retailer = id=>by(S.retailers,id);
+const offer = id=>by(S.offers,id);
+function balance(memberId){ return S.ledger.filter(l=>l.memberId===memberId).reduce((a,l)=>a+l.delta,0); }
+function offerCost(o){ if(o.costValue!=null) return Number(o.costValue)||0; const m=/\$\s?([\d,]+)/.exec(o.title||''); return m?Number(m[1].replace(/,/g,'')):0; }
+function memberImpact(memberId){ const tx = S.transactions.filter(t=>t.memberId===memberId && t.status==='verified'); return { items: tx.reduce((a,t)=>a+(category(t.categoryId).unit==='item'?t.qty:1),0), kg: tx.reduce((a,t)=>a+t.kg,0), count: tx.length }; }
+function activeOffers(){ const d=todayKey(); return S.offers.filter(o=>o.active && (!o.starts||o.starts<=d) && (!o.ends||o.ends>=d) && (!o.stockCap || o.stockUsed<o.stockCap)); }
+function activeCampaign(categoryId, facilityId){ const d=todayKey(); return S.campaigns.find(c=>c.active && c.categoryIds.includes(categoryId) && (c.facilityIds.length===0||c.facilityIds.includes(facilityId)) && c.starts<=d && c.ends>=d); }
+function audit(actor, action, entity, entityId, reason, before, after){ S.audit.unshift({ id:uid('A'), at:now(), actor, action, entity, entityId, reason:reason||'', before:before||null, after:after||null }); }
+function ledgerAdd(memberId, type, delta, refType, refId, reason, by_){ S.ledger.push({ id:uid('L'), at:now(), memberId, type, delta, refType, refId, reason:reason||'', by:by_||'system' }); }
+
+/* ===================== MEMBERS & TOKENS ===================== */
+function joinMember(f){
+  if(!f.displayName) throw new Error('Please enter a display name.');
+  if(!f.email && !f.mobile) throw new Error('Enter an email or a mobile so you can get back into your wallet.');
+  let sc; do{ sc = rnd(3)+'-'+rnd(3); } while(S.members.some(m=>m.shortCode===sc));
+  const m = { id:uid('M'), memberNo:'RC-'+String(100000+S.members.length+1).slice(1), displayName:f.displayName.trim(), email:(f.email||'').trim(), mobile:(f.mobile||'').trim(), postcode:(f.postcode||'').trim(), walletType:'personal', status:'active', marketingOptIn:!!f.marketing, shortCode:sc, source:f.source||'direct', joinedAt:now() };
+  S.members.push(m); audit('member','join','Member',m.id,'',null,{displayName:m.displayName,source:m.source}); save(); return m;
+}
+function issueToken(memberId){
+  const t = { id:uid('T'), memberId, token:rnd(24,'abcdefghijklmnopqrstuvwxyz0123456789'), issuedAt:now(), expiresAt: now()+S.settings.tokenMinutes*60000, usedAt:null };
+  S.tokens = S.tokens.filter(x=>x.memberId!==memberId || (x.usedAt)); // one live token per member
+  S.tokens.push(t); save(); return t;
+}
+function liveToken(memberId){ return S.tokens.find(t=>t.memberId===memberId && !t.usedAt && t.expiresAt>now()); }
+function resolveToken(tokenStr){ const t = S.tokens.find(x=>x.token===tokenStr); if(!t) return {err:'That code is not recognised. Ask the member to open their QR again.'}; if(t.usedAt) return {err:'This QR has already been used. Ask the member to refresh their QR.'}; if(t.expiresAt<=now()) return {err:'This QR has expired. Ask the member to refresh it.'}; return {token:t}; }
+function resolveShortCode(code){ code=(code||'').toUpperCase().replace(/[^A-Z0-9]/g,''); const m = S.members.find(x=>x.shortCode.replace('-','')===code); if(!m) return {err:'No member has that code.'}; const t = liveToken(m.id); if(!t) return {err:`${m.displayName} needs to open "Show my QR" on their phone first — that proves they are here.`}; return {token:t}; }
+
+/* ===================== RULES ENGINE ===================== */
+function calcRC(cat, qty, campaign){ const mult = campaign?campaign.multiplier:1; const base = Math.round(cat.baseRC*qty); const total = Math.round(cat.baseRC*qty*mult); return { base, mult, total, bonus: total-base }; }
+
+function issueCredits(tokenStr, categoryId, qty, operatorId, opts){
+  opts = opts||{};
+  const r = tokenStr.startsWith('sc:') ? resolveShortCode(tokenStr.slice(3)) : resolveToken(tokenStr);
+  if(r.err) return { ok:false, msg:r.err };
+  const tok = r.token, m = member(tok.memberId), op = operator(operatorId);
+  if(!m || m.status!=='active') return { ok:false, msg:'This member account is not active.' };
+  if(!op || !op.active) return { ok:false, msg:'Your operator account is not active.' };
+  const fac = facility(op.facilityId); if(!fac || !fac.accredited) return { ok:false, msg:'This facility is not accredited to issue credits.' };
+  const cat = category(categoryId); if(!cat || !cat.active) return { ok:false, msg:'Pick a category.' };
+  qty = Number(qty);
+  if(!(qty>0)) return { ok:false, msg: cat.unit==='kg' ? 'Enter the weight in kg.' : 'Enter how many items.' };
+  if(qty<cat.minQty || qty>cat.maxQty) return { ok:false, msg:`${cat.name} must be between ${cat.minQty} and ${cat.maxQty} ${cat.unit==='kg'?'kg':'items'} per transaction. Split it or ask the site manager.` };
+  const camp = activeCampaign(cat.id, fac.id);
+  let calc = calcRC(cat, qty, camp);
+  let note = '';
+  if(camp && camp.bonusUsed + calc.bonus > camp.bonusCap){ calc = calcRC(cat, qty, null); note = 'Sponsor bonus cap reached — base credits only.'; }
+  const kg = cat.unit==='kg' ? qty : qty*cat.kgPerItem;
+  const tk = todayKey();
+  const todaySame = S.transactions.filter(t=>t.memberId===m.id && t.categoryId===cat.id && todayKey(t.at)===tk && t.status!=='reversed').length;
+  const facToday = S.transactions.filter(t=>t.facilityId===fac.id && todayKey(t.at)===tk && t.status==='verified').reduce((a,t)=>a+t.rc,0);
+  let flag = null;
+  if(todaySame >= S.settings.velocityPerCategoryPerDay) flag = `Member already has ${todaySame} ${cat.name} transactions today (limit ${S.settings.velocityPerCategoryPerDay})`;
+  else if(calc.total > S.settings.reviewThresholdRC) flag = `${calc.total} RC is above the ${S.settings.reviewThresholdRC} RC single-transaction threshold`;
+  else if(facToday + calc.total > fac.dailyCap) flag = `Facility daily cap of ${fac.dailyCap} RC would be exceeded (${facToday} issued so far today)`;
+  const tx = { id:uid('X'), at:now(), memberId:m.id, facilityId:fac.id, operatorId:op.id, categoryId:cat.id, qty, baseRC:calc.base, campaignId: (camp&&calc.bonus>0)?camp.id:null, mult:calc.mult, rc:calc.total, kg, status: flag?'flagged':'verified', flagReason: flag||'', note, photo:!!opts.photo };
+  S.transactions.push(tx);
+  tok.usedAt = now();
+  if(!flag) postTransaction(tx, camp, calc);
+  save();
+  return { ok:true, tx, member:m, flagged:!!flag, msg: flag ? `Held for site manager approval — ${flag}.` : `+${calc.total} RC issued to ${m.displayName}${calc.bonus>0?` (includes ${calc.bonus} sponsor bonus)`:''}${note?' · '+note:''}` };
+}
+function postTransaction(tx, camp, calc){
+  ledgerAdd(tx.memberId,'EARN',tx.baseRC,'Transaction',tx.id, `${category(tx.categoryId).name} × ${tx.qty}${category(tx.categoryId).unit==='kg'?' kg':''}`, tx.operatorId);
+  if(calc.bonus>0 && camp){ ledgerAdd(tx.memberId,'BONUS',calc.bonus,'Campaign',camp.id, `${camp.name} ${camp.multiplier}×`, tx.operatorId); camp.bonusUsed += calc.bonus; }
+}
+function approveTransaction(txId, actor, reason){
+  const tx = S.transactions.find(t=>t.id===txId); if(!tx || tx.status!=='flagged') return;
+  const cat = category(tx.categoryId); const camp = tx.campaignId ? by(S.campaigns,tx.campaignId) : null;
+  const calc = { base:tx.baseRC, bonus: tx.rc-tx.baseRC };
+  tx.status='verified'; tx.approvedBy=actor; postTransaction(tx, camp, calc);
+  audit(actor,'approve','Transaction',tx.id,reason||'Approved after review'); save();
+}
+function rejectTransaction(txId, actor, reason){
+  const tx = S.transactions.find(t=>t.id===txId); if(!tx) return;
+  if(tx.status==='verified'){ ledgerAdd(tx.memberId,'REVERSAL',-tx.rc,'Transaction',tx.id, reason, actor); }
+  tx.status='reversed'; tx.reversedBy=actor; tx.reverseReason=reason;
+  audit(actor,'reverse','Transaction',tx.id,reason); save();
+}
+function adjustMember(memberId, delta, actor, reason){ ledgerAdd(memberId,'ADJUST',Number(delta),'Member',memberId,reason,actor); audit(actor,'adjust','Member',memberId,reason,null,{delta}); save(); }
+
+/* ===================== REDEMPTION ===================== */
+function redeemOffer(memberId, offerId){
+  const m = member(memberId), o = offer(offerId);
+  if(!m||!o) return {ok:false,msg:'Offer not found.'};
+  if(!activeOffers().includes(o)) return {ok:false,msg:'This offer is no longer available.'};
+  const bal = balance(memberId);
+  if(bal < o.rcCost) return {ok:false,msg:`You need ${o.rcCost-bal} more RC for this reward.`};
+  let code; do{ code='RC-'+rnd(4)+'-'+rnd(2); } while(S.redemptions.some(r=>r.code===code));
+  const rd = { id:uid('RD'), memberId, offerId, code, rc:o.rcCost, status:'issued', issuedAt:now(), expiresAt: now()+ (o.validityDays||S.settings.codeValidityDays)*86400000, validatedAt:null, retailerId:null, saleAmount:null };
+  S.redemptions.push(rd); o.stockUsed=(o.stockUsed||0)+1;
+  ledgerAdd(memberId,'REDEEM',-o.rcCost,'Redemption',rd.id, o.title, 'member');
+  save(); return {ok:true, rd};
+}
+function expireRedemptions(){
+  let n=0; S.redemptions.forEach(r=>{ if(r.status==='issued' && r.expiresAt<=now()){ r.status='expired'; ledgerAdd(r.memberId,'EXPIRE_RETURN',r.rc,'Redemption',r.id,'Reward expired — credits returned','system'); n++; } }); if(n) save(); return n;
+}
+function checkCode(code){
+  code=(code||'').toUpperCase().trim(); const rd = S.redemptions.find(r=>r.code===code); if(!rd) return {err:'Code not found. Check the letters and try again.'};
+  const o = offer(rd.offerId); return { rd, offer:o, member:member(rd.memberId), status: rd.status==='issued' ? (rd.expiresAt<=now()?'expired':'valid') : rd.status };
+}
+function validateCode(code, retailerId, saleAmount){
+  const c = checkCode(code); if(c.err) return {ok:false,msg:c.err};
+  if(c.status!=='valid') return {ok:false,msg: c.status==='validated' ? `Already used on ${fmtDateTime(c.rd.validatedAt)}.` : 'This code has expired.'};
+  if(c.offer.retailerId!==retailerId) return {ok:false,msg:`This reward is for ${retailer(c.offer.retailerId).name}, not your store.`};
+  c.rd.status='validated'; c.rd.validatedAt=now(); c.rd.retailerId=retailerId; c.rd.saleAmount = saleAmount?Number(saleAmount):null;
+  audit('retailer:'+retailerId,'validate','Redemption',c.rd.id,'',null,{saleAmount:c.rd.saleAmount}); save(); return {ok:true, rd:c.rd, offer:c.offer};
+}
+
+/* ===================== METRICS ===================== */
+function metrics(range){ // range: 'all' | number of days
+  const from = range==='all' ? 0 : now()-range*86400000;
+  const inR = ts=>ts>=from;
+  const members = S.members.filter(m=>inR(m.joinedAt));
+  const tx = S.transactions.filter(t=>inR(t.at));
+  const vtx = tx.filter(t=>t.status==='verified');
+  const activeIds = new Set(vtx.map(t=>t.memberId));
+  const rcIssued = vtx.reduce((a,t)=>a+t.rc,0);
+  const flaggedRC = tx.filter(t=>t.status==='flagged').reduce((a,t)=>a+t.rc,0);
+  const reversedRC = tx.filter(t=>t.status==='reversed').reduce((a,t)=>a+t.rc,0);
+  const rds = S.redemptions.filter(r=>inR(r.issuedAt));
+  const cheapest = Math.min.apply(null, activeOffers().map(o=>o.rcCost).concat([Infinity]));
+  const eligible = S.members.filter(m=>balance(m.id)>=cheapest || S.redemptions.some(r=>r.memberId===m.id)).length;
+  const redeemers = new Set(rds.map(r=>r.memberId)).size;
+  const bySrc = {}; members.forEach(m=>{ bySrc[m.source]=(bySrc[m.source]||0)+1; });
+  const byCat = {}; vtx.forEach(t=>{ const c=category(t.categoryId).name; byCat[c]=byCat[c]||{n:0,rc:0,kg:0}; byCat[c].n++; byCat[c].rc+=t.rc; byCat[c].kg+=t.kg; });
+  const byRet = {}; rds.forEach(r=>{ const o=offer(r.offerId); const k=retailer(o.retailerId).name+' · '+o.title; byRet[k]=byRet[k]||{issued:0,validated:0,expired:0,sales:0}; byRet[k].issued++; if(r.status==='validated'){byRet[k].validated++; byRet[k].sales+=r.saleAmount||0;} if(r.status==='expired')byRet[k].expired++; });
+  const spend = Object.entries(S.spend).filter(([k])=>range==='all'||new Date(k).getTime()>=from).reduce((a,[,v])=>a+Number(v||0),0);
+  const days = range==='all' ? Math.max(1,(now()-Math.min.apply(null,S.transactions.map(t=>t.at).concat([now()])))/86400000) : range;
+  const totalMembers = S.members.length;
+  return { newMembers:members.length, totalMembers, activeMembers:activeIds.size, transactions:vtx.length, rcIssued, kg:vtx.reduce((a,t)=>a+t.kg,0), flaggedCount:tx.filter(t=>t.status==='flagged').length,
+    fraudRate: rcIssued+reversedRC ? reversedRC/(rcIssued+reversedRC) : 0, flaggedRC,
+    redemptionsIssued:rds.length, redemptionsValidated:rds.filter(r=>r.status==='validated').length, redemptionsExpired:rds.filter(r=>r.status==='expired').length,
+    redemptionRate: eligible? redeemers/eligible : 0, eligible, redeemers,
+    northStar: activeIds.size ? (vtx.length/activeIds.size)*(365/days) : 0,
+    cpam: activeIds.size ? spend/activeIds.size : 0, spend, bySrc, byCat, byRet };
+}
+
+/* ===================== SAMPLE MONTH ===================== */
+function loadDemo(){
+  S = blank(); seedBase(S);
+  const d = 86400000;
+  const mk = (name,email,mobile,src,days)=>{ const m = joinMember({displayName:name,email,mobile,source:src}); m.joinedAt = now()-days*d; return m; };
+  const sam = mk('Sam','sam@example.com','','site-poster',20);
+  const priya = mk('Priya','priya@example.com','','retailer-flyer',14);
+  const lee = mk('Lee','','0400 000 000','sms',9);
+  const jo = mk('Jo','jo@example.com','','site-poster',3);
+  const backdate = (memberId,catId,qty,daysAgo,op)=>{ const t=issueToken(memberId); const r=issueCredits(t.token,catId,qty,op||'O1'); if(r.ok){ r.tx.at = now()-daysAgo*d; S.ledger.filter(l=>l.refId===r.tx.id).forEach(l=>l.at=r.tx.at); } return r; };
+  backdate(sam.id,'C1',2,18); backdate(sam.id,'C4',3,12); backdate(sam.id,'C1',1,5);
+  backdate(priya.id,'C2',1,10); backdate(priya.id,'C1',3,4); backdate(priya.id,'C3',60,2);
+  backdate(lee.id,'C1',1,8); backdate(lee.id,'C3',120,1);
+  backdate(jo.id,'C1',1,1);
+  // one flagged transaction awaiting review
+  const bigT = issueToken(lee.id); const big = issueCredits(bigT.token,'C3',480,'O1'); if(big.ok){ big.tx.at=now()-2*3600000; }
+  // one redemption already validated
+  const rr = redeemOffer(priya.id,'OF1'); if(rr.ok){ rr.rd.issuedAt = now()-3*d; S.ledger.filter(l=>l.refId===rr.rd.id).forEach(l=>l.at=rr.rd.issuedAt); validateCode(rr.rd.code,'R1',1899); rr.rd.validatedAt = now()-1*d; }
+  // a month of store activity so a retailer sees real numbers
+  const shop = (name,email,offerId,daysIssued,daysUsed,sale,store,tx)=>{
+    const m = mk(name,email,'','retailer-flyer',daysIssued+6);
+    tx.forEach(([cat,q,ago])=>backdate(m.id,cat,q,ago));
+    const r = redeemOffer(m.id,offerId); if(!r.ok) return;
+    r.rd.issuedAt = now()-daysIssued*d; S.ledger.filter(l=>l.refId===r.rd.id).forEach(l=>l.at=r.rd.issuedAt);
+    if(daysUsed==null){ if(daysIssued>14){ r.rd.status='expired'; r.rd.expiresAt=now()-(daysIssued-14)*d; } return; }
+    validateCode(r.rd.code,store,sale); const dt=new Date(now()-daysUsed*d); dt.setHours(9+(daysUsed*7)%8, (daysUsed*13)%60, 0, 0); r.rd.validatedAt = dt.getTime();
+  };
+  shop('Mei','mei@example.com','OF1',33,31,2199,'R1',[['C1',3,36],['C4',4,35],['C1',2,34]]);
+  shop('Tom','tom@example.com','OF3',29,27,1299,'R1',[['C1',5,31]]);
+  shop('Aroha','aroha@example.com','OF2',26,24,1450,'R2',[['C2',4,30],['C4',8,28]]);
+  shop('Dan','dan@example.com','OF1',22,19,1750,'R1',[['C1',4,25],['C4',4,24]]);
+  shop('Zara','zara@example.com','OF1',20,null,null,null,[['C1',5,23]]);
+  shop('Kai','kai@example.com','OF2',16,13,1120,'R2',[['C2',5,18],['C4',5,17]]);
+  shop('Ruth','ruth@example.com','OF3',15,12,null,'R1',[['C1',5,17]]);
+  shop('Omar','omar@example.com','OF1',11,9,2450,'R1',[['C1',5,14]]);
+  shop('Bec','bec@example.com','OF2',7,5,1290,'R2',[['C2',3,9],['C4',6,8]]);
+  shop('Nick','nick@example.com','OF1',4,2,1650,'R1',[['C1',5,6]]);
+  shop('Ivy','ivy@example.com','OF3',2,null,null,null,[['C1',5,3]]);
+  S.spend[todayKey(now()-7*d)] = 120; S.spend[todayKey()] = 80;
+  S.ui.memberId = sam.id; S.ui.role='member'; S.ui.wtab='home';
+  save();
+}
+</script>
+<script>
+/* ===================== UI PLUMBING ===================== */
+const stage = document.getElementById('stage');
+let qrTimer = null;
+function toast(msg, kind){ const h=document.getElementById('toastHost'); h.innerHTML=''; const t=document.createElement('div'); t.className='toast '+(kind||''); t.textContent=msg; h.appendChild(t); setTimeout(()=>{ if(t.parentNode) t.remove(); }, 3200); }
+function setRole(r){ S.ui.role=r; save(); render(); }
+function ui(patch){ Object.assign(S.ui,patch); save(); render(); }
+function pill(status){ const map={verified:'ok',flagged:'warn',reversed:'bad',issued:'info',validated:'ok',expired:'neutral',cancelled:'bad',active:'ok',suspended:'bad',closed:'neutral',valid:'ok'}; return `<span class="pill ${map[status]||'neutral'}">${esc(status)}</span>`; }
+function opt(list, val, label){ return list.map(x=>`<option value="${esc(x.id)}" ${x.id===val?'selected':''}>${esc(label?label(x):x.name)}</option>`).join(''); }
+function icon(n){ const p={home:'<path d="M3 11 12 3l9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',qr:'<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M21 14v7h-4M14 21h2"/>',offers:'<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>',rewards:'<rect x="3" y="8" width="18" height="4"/><path d="M12 8v13M5 12v9h14v-9M12 8c-2-3-6-3-6-1s4 1 6 1c2 0 6 1 6-1s-4-2-6 1z"/>',history:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'}; return `<svg viewBox="0 0 24 24" aria-hidden="true">${p[n]}</svg>`; }
+
+/* ===================== MEMBER ===================== */
+function renderMember(){
+  const m = S.ui.memberId ? member(S.ui.memberId) : null;
+  if(!m){ stage.innerHTML = `<div class="phone">${joinScreen()}</div>`; return; }
+  expireRedemptions();
+  const bal = balance(m.id), imp = memberImpact(m.id);
+  const tab = S.ui.wtab||'home';
+  const top = `<div class="wallet-top">
+    <div class="who"><span>${esc(m.memberNo)}</span><label class="row" style="gap:.4rem"><span class="tiny">Switch wallet</span><select data-action="switch-member">${opt(S.members,m.id,x=>x.displayName)}<option value="__new">+ Join as new member</option></select></label></div>
+    <div><div class="eyebrow" style="color:var(--teal-muted)">Recycle Credits</div><div class="balance num">${bal}<small>RC</small></div></div>
+    <div class="impact">${imp.items} item${imp.items===1?'':'s'} recycled · ${Math.round(imp.kg)} kg diverted from landfill</div>
+  </div>`;
+  let body='';
+  if(tab==='home') body = walletHome(m,bal);
+  else if(tab==='qr') body = walletQR(m);
+  else if(tab==='offers') body = walletOffers(m,bal);
+  else if(tab==='rewards') body = walletRewards(m);
+  else if(tab==='history') body = walletHistory(m);
+  else if(tab==='settings') body = walletSettings(m);
+  const nav = ['home','qr','offers','rewards','history'].map(t=>`<button type="button" data-action="wtab" data-tab="${t}" aria-current="${tab===t?'page':'false'}">${icon(t)}<span>${{home:'Home',qr:'My QR',offers:'Offers',rewards:'Rewards',history:'History'}[t]}</span></button>`).join('');
+  stage.innerHTML = `<div class="phone">${top}<div class="wallet-body">${body}</div><nav class="wnav" aria-label="Wallet">${nav}</nav></div>`;
+  if(tab==='qr') mountQR(m);
+}
+function joinScreen(){
+  const existing = S.members.length ? `<div class="card soft small">Already joined? <select data-action="switch-member" style="margin-top:.4rem"><option value="">Choose your wallet…</option>${opt(S.members,null,x=>x.displayName+' · '+x.memberNo)}</select></div>` : '';
+  return `<div class="wallet-top"><div class="eyebrow" style="color:var(--lime-2)">Recycle Credits</div><h1 style="color:#fff;font-size:1.7rem">Don't throw it away.<br>Bank the value.</h1><p class="impact">Recycle at an accredited partner, show your QR, and earn credits you can spend with local retailers.</p></div>
+  <form class="wallet-body" id="joinForm" autocomplete="off">
+    <div class="field"><label for="jName">What should we call you?</label><input type="text" id="jName" placeholder="First name or nickname" required><div class="hint">Shown to counter staff so they credit the right wallet. Doesn't have to be your legal name.</div></div>
+    <div class="field"><label for="jEmail">Email</label><input type="email" id="jEmail" placeholder="you@example.com"><div class="hint">Used only to get you back into your wallet and send reward codes.</div></div>
+    <div class="field"><label for="jMobile">Mobile <span class="muted">(instead of email, if you prefer)</span></label><input type="tel" id="jMobile" placeholder="04xx xxx xxx"></div>
+    <div class="field"><label for="jPostcode">Postcode <span class="muted">(optional)</span></label><input type="text" id="jPostcode" inputmode="numeric" maxlength="4" placeholder="3215"><div class="hint">Helps us bring partners and offers to your area.</div></div>
+    <div class="field"><label for="jSource">How did you hear about us?</label><select id="jSource"><option value="site-poster">Poster at the recycling centre</option><option value="retailer-flyer">Retailer flyer</option><option value="sms">SMS invitation</option><option value="friend">A friend</option><option value="direct">Other</option></select></div>
+    <label class="check"><input type="checkbox" id="jMarketing"><span>Send me partner offers by email or SMS. You can turn this off any time.</span></label>
+    <p class="tiny muted">By joining you accept the <a href="#" data-action="noop">terms</a> and our <a href="#" data-action="noop">collection notice</a>. We never ask for your date of birth, ID or street address.</p>
+    <button class="btn primary big" type="submit">Create my wallet</button>
+    ${existing}
+  </form>`;
+}
+function walletHome(m,bal){
+  const offers = activeOffers().sort((a,b)=>a.rcCost-b.rcCost);
+  const next = offers.find(o=>o.rcCost>bal); const can = offers.filter(o=>o.rcCost<=bal);
+  const nudge = can.length ? `<div class="nudge">🎉 <span>You can redeem <b>${can.length} reward${can.length>1?'s':''}</b> right now.</span><button class="btn sm primary" type="button" data-action="wtab" data-tab="offers">See offers</button></div>` : next ? progressCard(bal,next) : '';
+  const imp = memberImpact(m.id); const eq = kgEquivalent(imp.kg);
+  const recent = S.ledger.filter(l=>l.memberId===m.id).slice(-3).reverse();
+  return `<button class="btn primary big" type="button" data-action="wtab" data-tab="qr">Show my QR</button>
+  ${nudge}
+  ${imp.kg>0?`<div class="card impact-card"><div class="eyebrow">Kept out of landfill</div><div class="big num">${Math.round(imp.kg).toLocaleString('en-AU')}<small> kg</small></div><div class="eq">${eq}</div></div>`:''}
+  <div><div class="row between"><h3>Recent activity</h3><a href="#" class="small" data-action="wtab" data-tab="history">All</a></div>
+  ${recent.length? recent.map(ledgerRow).join('') : '<div class="empty">Nothing yet. Show your QR at the counter to earn your first credits.</div>'}</div>
+  <div class="card soft small"><b>How it works</b><br>1. Bring your items to the recycling site.<br>2. Show your QR at the counter.<br>3. Staff verify the items and credits land here.<br>4. Spend credits on partner rewards.</div>
+  <a href="#" class="small muted" data-action="wtab" data-tab="settings">Settings and my data</a>`;
+}
+function progressCard(bal,next){
+  const gap=next.rcCost-bal, pctv=Math.min(100,Math.round(bal/next.rcCost*100));
+  const cat=S.categories.filter(c=>c.active&&c.unit==='item').sort((a,b)=>b.baseRC-a.baseRC)[0];
+  const items=cat?Math.ceil(gap/cat.baseRC):0;
+  return `<div class="card progress-card"><div class="row between"><div><div class="eyebrow">Next reward</div><b>${esc(next.title)}</b><div class="tiny muted">${esc(retailer(next.retailerId).name)}</div></div><div class="num big">${gap}<small> RC to go</small></div></div>
+  <div class="pbar" role="progressbar" aria-valuenow="${bal}" aria-valuemin="0" aria-valuemax="${next.rcCost}"><span style="width:${pctv}%"></span></div>
+  <div class="tiny muted">${bal} of ${next.rcCost} RC${cat&&items>0?` · about ${items} more ${plural(cat.name.toLowerCase(),items)} away`:''}</div></div>`;
+}
+function plural(n,c){ if(c===1) return n; if(/ss$/.test(n)) return n+'es'; if(/s$/.test(n)) return n; return n+'s'; }
+function kgEquivalent(kg){
+  kg=Math.round(kg); if(kg<=0) return '';
+  if(kg<25) return 'About a full wheelie bin.';
+  if(kg<90) return 'About the weight of an upright fridge.';
+  if(kg<250) return 'Heavier than a full-size washing machine and dryer together.';
+  if(kg<450) return 'About the weight of a grand piano.';
+  if(kg<1000) return 'About the weight of a dairy cow.';
+  if(kg<2000) return 'About the weight of a small car.';
+  return 'About the weight of '+(kg/1200).toFixed(1).replace(/\.0$/,'')+' small cars.';
+}
+function ledgerRow(l){ const plus=l.delta>0; return `<div class="ledger-item"><div><div>${esc(l.reason||l.type)}</div><div class="d">${fmtDateTime(l.at)} · ${esc(l.type.replace('_',' ').toLowerCase())}</div></div><div class="amt num ${plus?'plus':'minus'}">${plus?'+':''}${l.delta} RC</div></div>`; }
+function walletQR(m){
+  let t = liveToken(m.id); if(!t) t = issueToken(m.id);
+  return `<div class="qrbox"><div id="qr" aria-label="Your QR code"></div><div class="shortcode">${esc(m.shortCode)}</div><div class="countdown" id="countdown"></div></div>
+  <p class="small muted" style="text-align:center">Show this to counter staff. Or give them the code above. It refreshes every ${S.settings.tokenMinutes} minutes and can only be used once — it never shows your details.</p>
+  <button class="btn ghost" type="button" data-action="refresh-qr">Refresh QR</button>
+  <div class="scanbox">
+    <div class="lead small">Two ways to use this</div>
+    <div class="small muted"><b>On another device:</b> point its camera at the QR. It opens the counter with you already loaded &mdash; no app, no sign-in.</div>
+    <div class="small muted"><b>On this screen:</b> jump straight to the counter instead.</div>
+    <button class="btn primary" type="button" data-action="simulate-scan" data-token="${esc(t.token)}">Open the counter with my QR</button>
+  </div>`;
+}
+function mountQR(m){
+  const t = liveToken(m.id); const el=document.getElementById('qr'); if(!el) return; el.innerHTML='';
+  const url = (typeof visitLink==='function') ? visitLink(m) : (APP_URL+'/v/'+t.token);
+  if(window.QRCode){ new QRCode(el,{text:url,width:196,height:196,correctLevel:QRCode.CorrectLevel.M,colorDark:'#14302C',colorLight:'#FFFFFF'}); }
+  else el.innerHTML='<div class="mono tiny" style="max-width:196px;word-break:break-all">'+esc(url)+'</div>';
+  if(qrTimer) clearInterval(qrTimer);
+  const tick=()=>{ const c=document.getElementById('countdown'); if(!c){clearInterval(qrTimer);return;} const tt=liveToken(m.id); if(!tt){ clearInterval(qrTimer); issueToken(m.id); render(); return; } const s=Math.max(0,Math.floor((tt.expiresAt-now())/1000)); c.textContent='Valid for '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
+  tick(); qrTimer=setInterval(tick,1000);
+}
+function walletOffers(m,bal){
+  const offers = activeOffers().sort((a,b)=>a.rcCost-b.rcCost);
+  if(!offers.length) return '<h2>Rewards</h2><div class="empty">No partner offers yet.</div>';
+  return `<h2>Spend your credits</h2>`+offers.map(o=>{ const can=bal>=o.rcCost; return `<div class="offer">
+    <div class="row between"><span class="eyebrow">${esc(retailer(o.retailerId).name)}</span><span class="cost num">${o.rcCost} RC</span></div>
+    <div class="t">${esc(o.title)}</div><div class="small">${esc(o.reward)}${o.minSpend?` · min spend ${money(o.minSpend)}`:''}</div>
+    <div class="tiny muted">${esc(o.terms)} Code valid ${o.validityDays} days.</div>
+    ${can?`<button class="btn primary" type="button" data-action="redeem" data-offer="${o.id}">Redeem for ${o.rcCost} RC</button>`:`<button class="btn" type="button" disabled>You need ${o.rcCost-bal} more RC</button>`}
+  </div>`; }).join('');
+}
+function walletRewards(m){
+  const rds = S.redemptions.filter(r=>r.memberId===m.id).sort((a,b)=>b.issuedAt-a.issuedAt);
+  if(!rds.length) return '<h2>My rewards</h2><div class="empty">Rewards you redeem will show here with a code to use in store.</div>';
+  return '<h2>My rewards</h2>'+rds.map(r=>{ const o=offer(r.offerId); const st = r.status==='issued'&&r.expiresAt<=now()?'expired':r.status; return `<div class="offer">
+    <div class="row between"><span class="eyebrow">${esc(retailer(o.retailerId).name)}</span>${pill(st)}</div>
+    <div class="t">${esc(o.title)}</div><div class="small">${esc(o.reward)}${o.minSpend?` · min spend ${money(o.minSpend)}`:''}</div>
+    <div class="code">${esc(r.code)}</div>
+    <div class="tiny muted">${st==='issued'?`Show this code at the counter. Expires ${fmtDate(r.expiresAt)}. If unused, your ${r.rc} RC come back.`: st==='validated'?`Used ${fmtDateTime(r.validatedAt)}`: st==='expired'?`Expired — ${r.rc} RC returned to your wallet`:''}</div>
+  </div>`; }).join('');
+}
+function walletHistory(m){
+  const ls = S.ledger.filter(l=>l.memberId===m.id).slice().reverse();
+  return '<h2>History</h2>'+(ls.length? `<div class="card">${ls.map(ledgerRow).join('')}</div>` : '<div class="empty">No activity yet.</div>');
+}
+function walletSettings(m){
+  return `<h2>Settings</h2>
+  <form id="settingsForm" class="stack">
+    <div class="field"><label for="sName">Display name</label><input type="text" id="sName" value="${esc(m.displayName)}"></div>
+    <div class="field"><label for="sPostcode">Postcode (optional)</label><input type="text" id="sPostcode" value="${esc(m.postcode)}" maxlength="4"></div>
+    <label class="check"><input type="checkbox" id="sMarketing" ${m.marketingOptIn?'checked':''}><span>Send me partner offers</span></label>
+    <button class="btn primary" type="submit">Save</button>
+  </form>
+  <details><summary>What we hold about you</summary><div class="small stack" style="margin-top:.5rem">
+    <div><b>Member number</b> ${esc(m.memberNo)}</div><div><b>Display name</b> ${esc(m.displayName)}</div><div><b>Email</b> ${esc(m.email||'—')}</div><div><b>Mobile</b> ${esc(m.mobile||'—')}</div><div><b>Postcode</b> ${esc(m.postcode||'—')}</div><div><b>Marketing</b> ${m.marketingOptIn?'opted in':'opted out'}</div><div><b>Joined</b> ${fmtDate(m.joinedAt)}</div><div><b>Recycling records</b> ${S.transactions.filter(t=>t.memberId===m.id).length} · <b>Rewards</b> ${S.redemptions.filter(r=>r.memberId===m.id).length}</div>
+    <div class="muted">We don't hold your date of birth, ID documents or street address.</div></div></details>
+  <button class="btn ghost" type="button" data-action="request-delete">Request account deletion</button>
+  <button class="btn ghost" type="button" data-action="wtab" data-tab="home">Back</button>`;
+}
+
+/* ===================== COUNTER ===================== */
+function renderCounter(){
+  const op = operator(S.ui.operatorId) || S.operators[0]; S.ui.operatorId = op.id;
+  const fac = facility(op.facilityId);
+  const tab = S.ui.ctab||'scan';
+  const flagged = S.transactions.filter(t=>t.status==='flagged' && t.facilityId===fac.id);
+  const tabs = [['scan','Scan'],['today','Today']].concat(op.role==='site_manager'?[['review',`Review${flagged.length?' ('+flagged.length+')':''}`]]:[]);
+  const head = `<div class="chead"><div><div class="eyebrow" style="color:var(--teal-muted)">Recycler Counter</div><h2 style="color:#fff">${esc(fac.name)}</h2></div><label class="row" style="gap:.4rem"><span class="tiny" style="color:var(--teal-muted)">Signed in as</span><select data-action="switch-operator">${opt(S.operators.filter(o=>o.active),op.id,o=>o.name+' · '+(o.role==='site_manager'?'site manager':'operator'))}</select></label></div>
+  <div class="ctabs" role="tablist">${tabs.map(([k,l])=>`<button type="button" role="tab" aria-selected="${tab===k}" data-action="ctab" data-tab="${k}">${l}</button>`).join('')}</div>`;
+  let body='';
+  if(tab==='scan') body = counterScan(op,fac);
+  else if(tab==='today') body = counterToday(fac);
+  else if(tab==='review') body = reviewList(flagged, op.name, true);
+  stage.innerHTML = `<div class="tablet">${head}<div class="cbody">${body}</div></div>`;
+}
+function counterScan(op,fac){
+  const cm = S.ui.counterMember;
+  if(S.ui.counterResult){ const r=S.ui.counterResult;
+    const handoff = (!r.flagged) ? `<div class="handoff"><div id="claimqr" aria-label="Claim code"></div><div class="hcode">${esc((r.tx.id||'').toUpperCase())}</div><div class="hnote">If the member is on their own phone, have them point the camera here to collect the credits.</div></div>` : '';
+    return `<div class="result ${r.flagged?'warn':'ok'}"><div class="eyebrow">${r.flagged?'Held for review':'Credits issued'}</div><div class="big">${r.flagged?'⏸':'+'+r.tx.rc+' RC'}</div><div>${esc(r.msg)}</div><div class="small muted">${esc(category(r.tx.categoryId).name)} × ${r.tx.qty}${category(r.tx.categoryId).unit==='kg'?' kg':''} · ${Math.round(r.tx.kg)} kg diverted · ${esc(r.member.displayName)}</div></div>${handoff}<button class="btn primary big" type="button" data-action="counter-next">Next member</button>`; }
+  if(!cm){
+    const live = S.members.filter(m=>liveToken(m.id));
+    return `<div class="stack">
+      <div class="card"><h3>Scan the member&rsquo;s QR</h3><p class="small muted">Point this device&rsquo;s camera at the QR on their phone. It opens this screen with the member already loaded &mdash; nothing to install.</p>
+        ${live.length? `<div class="card soft small" style="margin-top:.6rem">Or load someone already showing a QR on this device:<div class="row" style="margin-top:.4rem">${live.map(m=>`<button class="btn sm primary" type="button" data-action="simulate-scan" data-token="${esc(liveToken(m.id).token)}">Load ${esc(m.displayName)}</button>`).join('')}</div></div>` : `<div class="card soft small" style="margin-top:.6rem">Nobody is showing a QR on this device yet &mdash; open <b>Member &rarr; My QR</b> first, or scan a phone.</div>`}</div>
+      <form id="shortForm" class="card stack"><h3>Or type their code</h3><div class="row"><input type="text" id="shortCode" placeholder="ABC-123" style="max-width:200px;text-transform:uppercase;font-family:IBM Plex Mono,monospace;letter-spacing:.1em" autocomplete="off"><button class="btn primary" type="submit">Find member</button></div><p class="tiny muted">The member must have their QR screen open — that's how we know they're here.</p></form>
+    </div>`;
+  }
+  const m = member(cm.memberId); const cat = S.ui.counterCat ? category(S.ui.counterCat) : null; const qty = (S.ui.counterQty==null||isNaN(S.ui.counterQty)) ? 1 : S.ui.counterQty;
+  const camp = cat ? activeCampaign(cat.id, fac.id) : null;
+  const preview = cat && qty>0 ? calcRC(cat, qty, camp) : null;
+  return `<div class="member-strip"><div><div class="eyebrow">Member</div><div class="n">${esc(m.displayName)}</div><div class="tiny muted">${esc(m.memberNo)} · QR verified ${fmtTime(cm.at)}</div></div><button class="btn sm ghost" type="button" data-action="counter-next">Cancel</button></div>
+  <div><div class="eyebrow" style="margin-bottom:.5rem">What did they bring?</div><div class="cats">${S.categories.filter(c=>c.active).map(c=>{ const cc=activeCampaign(c.id,fac.id); return `<button type="button" class="cat" aria-pressed="${cat&&cat.id===c.id}" data-action="counter-cat" data-cat="${c.id}"><span class="n">${esc(c.name)}</span><span class="r">${c.baseRC} RC per ${c.unit==='kg'?'kg':'item'}${cc?` · <b>${cc.multiplier}× bonus</b>`:''}</span></button>`; }).join('')}</div></div>
+  ${cat? `<div class="card stack"><div class="eyebrow">${cat.unit==='kg'?'Weight in kg':'How many?'}</div><div class="qty"><button type="button" data-action="qty" data-d="-1" aria-label="Less">−</button><input type="number" id="qtyInput" value="${qty}" min="${cat.minQty}" max="${cat.maxQty}" step="${cat.unit==='kg'?'1':'1'}" inputmode="numeric" data-action="qty-input"><button type="button" data-action="qty" data-d="1" aria-label="More">+</button><span class="small muted">${cat.minQty}–${cat.maxQty} ${cat.unit==='kg'?'kg':'items'} per transaction</span></div>
+    <label class="check small"><input type="checkbox" id="photoChk"><span>Photo attached (optional, for high-value items)</span></label>
+    <div class="row between"><div><div class="eyebrow">Will issue</div><div style="font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:1.6rem" class="num">${preview?preview.total:0} RC</div>${preview&&preview.bonus>0?`<div class="tiny" style="color:var(--accent)">includes ${preview.bonus} RC sponsor bonus</div>`:''}</div><button class="btn primary" style="min-height:56px;padding:0 1.6rem" type="button" data-action="issue">Issue credits</button></div></div>` : ''}`;
+}
+function counterToday(fac){
+  const tk=todayKey(); const tx=S.transactions.filter(t=>t.facilityId===fac.id && todayKey(t.at)===tk).sort((a,b)=>b.at-a.at);
+  const rc = tx.filter(t=>t.status==='verified').reduce((a,t)=>a+t.rc,0);
+  return `<div class="kpis"><div class="kpi"><div class="v num">${tx.length}</div><div class="l">transactions today</div></div><div class="kpi"><div class="v num">${rc}</div><div class="l">RC issued</div><div class="s">cap ${fac.dailyCap}</div></div><div class="kpi"><div class="v num">${Math.round(tx.filter(t=>t.status==='verified').reduce((a,t)=>a+t.kg,0))}</div><div class="l">kg diverted</div></div></div>
+  ${tx.length? `<div class="tw"><table><thead><tr><th>Time</th><th>Member</th><th>Category</th><th>Qty</th><th>RC</th><th>Operator</th><th>Status</th></tr></thead><tbody>${tx.map(t=>`<tr><td>${fmtTime(t.at)}</td><td>${esc(member(t.memberId).displayName)}</td><td>${esc(category(t.categoryId).name)}</td><td class="num">${t.qty}${category(t.categoryId).unit==='kg'?' kg':''}</td><td class="num">${t.rc}</td><td>${esc(operator(t.operatorId).name)}</td><td>${pill(t.status)}</td></tr>`).join('')}</tbody></table></div>` : '<div class="empty">No transactions yet today.</div>'}`;
+}
+function reviewList(list, actor, compact){
+  if(!list.length) return '<div class="empty">Nothing waiting for review.</div>';
+  return `<div class="stack">${list.map(t=>`<div class="card stack" data-tx="${t.id}"><div class="row between"><div><b>${esc(member(t.memberId).displayName)}</b> · ${esc(category(t.categoryId).name)} × ${t.qty}${category(t.categoryId).unit==='kg'?' kg':''} · <b class="num">${t.rc} RC</b></div><span class="tiny muted">${fmtDateTime(t.at)} · ${esc(operator(t.operatorId).name)}${compact?'':' · '+esc(facility(t.facilityId).name)}</span></div>
+    <div class="small" style="color:var(--warn)">⚠ ${esc(t.flagReason)}</div>
+    <div class="row"><input type="text" placeholder="Reason (required to reject)" data-reason style="max-width:320px"><button class="btn sm primary" type="button" data-action="approve" data-tx="${t.id}" data-actor="${esc(actor)}">Approve and issue</button><button class="btn sm danger" type="button" data-action="reject" data-tx="${t.id}" data-actor="${esc(actor)}">Reject</button></div></div>`).join('')}</div>`;
+}
+</script>
+<script>
+/* ===================== RETAILER ===================== */
+function monthKey(ts){ const d=new Date(ts); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function monthLabel(k){ const [y,m]=k.split('-'); return new Date(Number(y),Number(m)-1,1).toLocaleDateString('en-AU',{month:'long',year:'numeric'}); }
+function storeNumbers(rid, mk){
+  const mine = S.redemptions.filter(x=>offer(x.offerId).retailerId===rid);
+  const inMonth = x=> !mk || monthKey(x.validatedAt||x.issuedAt)===mk;
+  const used = mine.filter(x=>x.status==='validated' && inMonth(x)).sort((a,b)=>b.validatedAt-a.validatedAt);
+  const issued = mine.filter(x=>inMonth(x));
+  const live = mine.filter(x=>x.status==='issued');
+  const expired = mine.filter(x=>x.status==='expired' && inMonth(x));
+  const sales = used.reduce((a,x)=>a+(x.saleAmount||0),0);
+  const withSale = used.filter(x=>x.saleAmount).length;
+  const cost = used.reduce((a,x)=>a+offerCost(offer(x.offerId)),0);
+  const months = [...new Set(mine.map(x=>monthKey(x.validatedAt||x.issuedAt)))].sort().reverse();
+  const exposure = S.offers.filter(o=>o.retailerId===rid&&o.active).reduce((a,o)=>a+(o.stockCap?o.stockCap*offerCost(o):0),0);
+  const uncapped = S.offers.some(o=>o.retailerId===rid&&o.active&&!o.stockCap&&offerCost(o)>0);
+  return {used,issued,live,expired,sales,withSale,cost,months,exposure,uncapped};
+}
+function numbersCSV(rid, mk){
+  const n=storeNumbers(rid,mk); const r=retailer(rid);
+  const rows=[['Date used','Code','Offer','Store','Sale amount (self-reported)','Cost to store','Member']];
+  n.used.forEach(x=>{ const o=offer(x.offerId); rows.push([new Date(x.validatedAt).toLocaleString('en-AU'),x.code,o.title,r.name,x.saleAmount||'',offerCost(o),member(x.memberId).displayName]); });
+  return rows.map(a=>a.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+}
+function retailerNumbers(r){
+  const n0=storeNumbers(r.id,null);
+  const mk = S.ui.rmonth && n0.months.includes(S.ui.rmonth) ? S.ui.rmonth : (n0.months[0]||null);
+  const n=storeNumbers(r.id,mk);
+  if(!n0.issued.length) return `<div class="cbody stack"><div class="empty stack" style="text-align:center;padding:2rem 1rem"><h3>No codes yet</h3><p class="small muted">This page fills in as customers redeem your offer and your staff mark codes as used. Load a sample month to see what it looks like with real activity.</p><button class="btn primary" type="button" data-action="load-sample">Load a sample month</button></div></div>`;
+  const cpa = n.sales>0 ? (n.cost/n.sales*100) : null;
+  return `<div class="cbody stack">
+    <div class="row between wrap"><h3 style="margin:0">Your numbers</h3>${n0.months.length>1?`<select data-action="rmonth" aria-label="Month">${n0.months.map(k=>`<option value="${k}" ${k===mk?'selected':''}>${monthLabel(k)}</option>`).join('')}</select>`:`<span class="small muted">${mk?monthLabel(mk):''}</span>`}</div>
+    <div class="tiles">
+      <div class="tile"><div class="tv num">${n.used.length}</div><div class="tl">Codes used in store</div></div>
+      <div class="tile"><div class="tv num">${money(n.sales)}</div><div class="tl">Attributed sales${n.withSale<n.used.length?` <span class="tiny">(${n.withSale} of ${n.used.length} with an amount)</span>`:''}</div></div>
+      <div class="tile"><div class="tv num">${money(n.cost)}</div><div class="tl">Reward cost to you</div></div>
+      <div class="tile"><div class="tv num">${cpa==null?'—':cpa.toFixed(1)+'%'}</div><div class="tl">Reward cost as % of sales</div></div>
+      <div class="tile"><div class="tv num">${n.live.length}</div><div class="tl">Live codes not yet used</div></div>
+      <div class="tile"><div class="tv num">${n.expired.length}</div><div class="tl">Expired unused</div></div>
+    </div>
+    <div class="caveat small">Sale amounts are entered by your staff at the counter, so attribution is self-reported — enough to see the pattern, not an audited figure. Reward cost counts only codes actually used on a sale; nothing is charged for issued or expired codes.</div>
+    <div class="row between wrap"><h3 style="margin:0">Every code, traced to a sale</h3><button class="btn sm" type="button" data-action="csv" data-month="${mk||''}">Download CSV</button></div>
+    ${n.used.length?`<div class="rlist">${n.used.map(x=>{const o=offer(x.offerId); const c=offerCost(o); return `<div class="ritem"><div class="rl"><b>${esc(o.title)}</b><div class="tiny muted">${fmtDateTime(x.validatedAt)} · <span class="mono">${esc(x.code)}</span> · ${esc(r.name)}</div></div><div class="rr num"><div>${x.saleAmount?money(x.saleAmount):'<span class="muted">no amount</span>'}</div><div class="tiny muted">${c?'cost '+money(c):'service · $0'}</div></div></div>`;}).join('')}<div class="ritem total"><div class="rl"><b>${mk?monthLabel(mk):'Total'}</b></div><div class="rr num"><div><b>${money(n.sales)}</b></div><div class="tiny muted">cost ${money(n.cost)}</div></div></div></div><div class="tw"><table class="numbers"><thead><tr><th>Date used</th><th>Code</th><th>Offer</th><th>Store</th><th class="num">Sale</th><th class="num">Cost to you</th></tr></thead><tbody>${n.used.map(x=>{const o=offer(x.offerId); const c=offerCost(o); return `<tr><td>${fmtDateTime(x.validatedAt)}</td><td class="mono">${esc(x.code)}</td><td class="wrap">${esc(o.title)}</td><td>${esc(r.name)}</td><td class="num">${x.saleAmount?money(x.saleAmount):'<span class="muted">not entered</span>'}</td><td class="num">${c?money(c):'$0 <span class="tiny muted">service</span>'}</td></tr>`;}).join('')}</tbody><tfoot><tr><td colspan="4"><b>${mk?monthLabel(mk):'Total'}</b></td><td class="num"><b>${money(n.sales)}</b></td><td class="num"><b>${money(n.cost)}</b></td></tr></tfoot></table></div>`:'<div class="empty">No codes used in this month.</div>'}
+    <div class="card soft small"><b>Your maximum exposure</b> — ${n.exposure?`${money(n.exposure)} across your active offers (cap × reward value). Not a dollar beyond it.`:'$0 — your active offers are service rewards or uncapped.'}${n.uncapped?' <span class="legend-ph">One active offer has no cap set.</span>':''}</div>
+  </div>`;
+}
+function renderRetailer(){
+  expireRedemptions();
+  const rid = S.ui.retailerAuthed; const r = rid?retailer(rid):null;
+  const tab = S.ui.rtab||'check';
+  let body;
+  if(!r){
+    body = `<form id="pinForm" class="cbody stack" style="max-width:440px"><h2>Which store are you?</h2><p class="small muted">In the live product this is a bookmarked page with a store PIN. Pick a store to look around.</p>
+      <div class="field"><label for="pinStore">Store</label><select id="pinStore">${opt(S.retailers.filter(x=>x.active))}</select></div>
+      <button class="btn primary big" type="submit">Open my store page</button></form>`;
+  } else if(tab==='numbers'){
+    body = retailerNumbers(r);
+  } else {
+    const c = S.ui.retailerCheck;
+    const mine = S.redemptions.filter(x=>x.retailerId===r.id && x.status==='validated').sort((a,b)=>b.validatedAt-a.validatedAt).slice(0,8);
+    body = `<div class="cbody stack">
+      <form id="codeForm" class="card stack"><h3>Check a reward code</h3><div class="row"><input type="text" id="codeInput" placeholder="RC-XXXX-XX" style="max-width:220px;text-transform:uppercase;font-family:IBM Plex Mono,monospace;letter-spacing:.1em" autocomplete="off" value="${esc((c&&c.code) || pendingCode(r.id) || '')}"><button class="btn primary" type="submit">Check</button></div><div class="tiny muted">The customer reads the code from their phone. Fifteen seconds, no integration.</div></form>
+      ${c? (c.err? `<div class="result bad"><div>${esc(c.err)}</div></div>` : `<div class="result ${c.status==='valid'?'ok':c.status==='validated'?'warn':'bad'}"><div class="eyebrow">${esc(retailer(c.offer.retailerId).name)}</div><div class="big">${esc(c.offer.title)}</div><div>${esc(c.offer.reward)}${c.offer.minSpend?` · minimum spend ${money(c.offer.minSpend)}`:''}</div><div>${pill(c.status)} ${c.status==='validated'?'used '+fmtDateTime(c.rd.validatedAt):c.status==='valid'?'expires '+fmtDate(c.rd.expiresAt):''}</div><div class="small muted">Member: ${esc(c.member.displayName)}</div>
+        ${c.status==='valid' && c.offer.retailerId===r.id ? `<form id="useForm" class="row" style="justify-content:center;margin-top:.5rem"><input type="number" id="saleAmount" placeholder="Sale amount $ (optional)" style="max-width:220px" min="0"><button class="btn primary" type="submit">Mark as used</button></form>` : c.status==='valid' ? `<div class="small" style="color:var(--bad)">This reward belongs to another store.</div>`:''}</div>`) : ''}
+      <div><div class="row between"><h3>Recent redemptions</h3><a href="#" class="small" data-action="rtab" data-tab="numbers">All your numbers</a></div>${mine.length?`<div class="tw"><table><thead><tr><th>When</th><th>Code</th><th>Reward</th><th>Sale</th></tr></thead><tbody>${mine.map(x=>`<tr><td>${fmtDateTime(x.validatedAt)}</td><td class="mono">${esc(x.code)}</td><td>${esc(offer(x.offerId).title)}</td><td class="num">${x.saleAmount?money(x.saleAmount):'—'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No codes used yet.</div>'}</div>
+    </div>`;
+  }
+  const tabs = r?`<div class="ctabs" role="tablist"><button type="button" role="tab" data-action="rtab" data-tab="check" aria-selected="${tab==='check'}">Check a code</button><button type="button" role="tab" data-action="rtab" data-tab="numbers" aria-selected="${tab==='numbers'}">Your numbers</button></div>`:'';
+  stage.innerHTML = `<div class="tablet"><div class="chead"><div><div class="eyebrow" style="color:var(--teal-muted)">Store page</div><h2 style="color:#fff">${r?esc(r.name):'Retail partner'}</h2></div>${r?`<button class="btn sm" type="button" data-action="retailer-signout" style="background:rgba(0,0,0,.25);color:#fff">Switch store</button>`:''}</div>${tabs}${body}</div>`;
+}
+
+/* ===================== START SCREEN ===================== */
+function renderStart(){
+  stage.innerHTML = `<div class="start" id="startScreen">
+    <div class="hero"><div class="eyebrow">Recycle Credits · pilot preview</div>
+      <h1>Recycle it. Bank the value.<br>Spend it in store.</h1>
+      <p>Customers earn credits for verified recycling at an accredited site and spend them with partner retailers. Every reward is tied to a completed sale — a store never pays for a customer who doesn&rsquo;t buy.</p></div>
+    <div class="paths">
+      <button type="button" class="path" data-action="start-go" data-role="member"><span class="pk">Customer</span><span class="pn">I&rsquo;m a customer</span><span class="pd">Join in ten seconds, earn credits, redeem a reward.</span><span class="go">Open my wallet →</span></button>
+      <button type="button" class="path" data-action="start-go" data-role="retailer"><span class="pk">Store</span><span class="pn">I work in a store</span><span class="pd">See your monthly numbers and check a customer&rsquo;s code.</span><span class="go">Open the store page →</span></button>
+      <button type="button" class="path" data-action="start-go" data-role="counter"><span class="pk">Recycling site</span><span class="pn">I run a recycling site</span><span class="pd">Scan a member, verify what they brought, issue credits.</span><span class="go">Open the counter →</span></button>
+    </div>
+    <div class="foot"><button type="button" class="btn ghost" data-action="start-walk">▶ Watch the 2½-minute walkthrough</button><a data-action="start-go" data-role="admin">Pilot admin</a></div>
+    <p class="fine">Runs entirely on this device — nothing is sent anywhere. Retailers, offers and credit values are placeholders until partners confirm them.</p>
+  </div>`;
+}
+/* ===================== ADMIN ===================== */
+function renderAdmin(){
+  expireRedemptions();
+  const tab = S.ui.atab||'metrics';
+  const flagged = S.transactions.filter(t=>t.status==='flagged');
+  const items = [['metrics','Pilot metrics'],['review','Review queue',flagged.length],['members','Members'],['transactions','Transactions'],['redemptions','Redemptions'],['categories','Categories'],['campaigns','Campaigns'],['offers','Offers'],['retailers','Retailers'],['facilities','Facilities & staff'],['audit','Audit log'],['settings','Settings']];
+  const nav = `<nav class="anav"><div class="eyebrow">Admin</div>${items.map(([k,l,b])=>`<button type="button" data-action="atab" data-tab="${k}" aria-current="${tab===k?'page':'false'}"><span>${l}</span>${b?`<span class="badge">${b}</span>`:''}</button>`).join('')}</nav>`;
+  const fn = {metrics:adminMetrics,review:()=>`<header><h2>Review queue</h2></header>${reviewList(flagged,'admin',false)}`,members:adminMembers,transactions:adminTransactions,redemptions:adminRedemptions,categories:adminCategories,campaigns:adminCampaigns,offers:adminOffers,retailers:adminRetailers,facilities:adminFacilities,audit:adminAudit,settings:adminSettings}[tab];
+  stage.innerHTML = `<div class="desk">${nav}<div class="abody">${fn()}</div></div>`;
+}
+function pendingCode(retailerId){ const rd=S.redemptions.filter(x=>x.status==='issued' && offer(x.offerId).retailerId===retailerId).sort((a,b)=>b.issuedAt-a.issuedAt)[0]; return rd?rd.code:''; }
+function actorName(by){ const o=operator(by); if(o) return o.name; if(by==='member') return 'Member'; if(by==='system') return 'System'; if(by==='admin') return 'Admin'; return by||''; }
+function pct(x){ return (x*100).toFixed(0)+'%'; }
+function adminMetrics(){
+  const range = S.ui.mrange||'all'; const m = metrics(range);
+  const tbl = (rows, head)=> rows.length? `<div class="tw"><table><thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>` : '<div class="empty">No data in this range.</div>';
+  return `<header><h2>Pilot metrics</h2><select data-action="mrange" style="width:auto"><option value="7" ${range==='7'?'selected':''}>Last 7 days</option><option value="30" ${range==='30'?'selected':''}>Last 30 days</option><option value="all" ${range==='all'?'selected':''}>All time</option></select></header>
+  <div class="kpis">
+    <div class="kpi"><div class="v num">${m.newMembers}</div><div class="l">new members</div><div class="s">${m.totalMembers} total</div></div>
+    <div class="kpi"><div class="v num">${m.activeMembers}</div><div class="l">active members</div><div class="s">≥1 verified transaction</div></div>
+    <div class="kpi"><div class="v num">${m.transactions}</div><div class="l">verified transactions</div><div class="s">${m.rcIssued} RC · ${Math.round(m.kg)} kg</div></div>
+    <div class="kpi"><div class="v num">${m.northStar.toFixed(1)}</div><div class="l">north star</div><div class="s">transactions / active member / yr</div></div>
+    <div class="kpi"><div class="v num">${pct(m.redemptionRate)}</div><div class="l">redemption rate</div><div class="s">${m.redeemers} of ${m.eligible} eligible</div></div>
+    <div class="kpi"><div class="v num">${m.redemptionsValidated}/${m.redemptionsIssued}</div><div class="l">codes used / issued</div><div class="s">${m.redemptionsExpired} expired</div></div>
+    <div class="kpi"><div class="v num">${pct(m.fraudRate)}</div><div class="l">fraud rate</div><div class="s">reversed ÷ issued RC · ${m.flaggedCount} awaiting review</div></div>
+    <div class="kpi"><div class="v num">${m.cpam?'$'+m.cpam.toFixed(0):'—'}</div><div class="l">cost per active member</div><div class="s">${money(m.spend)} spend entered</div></div>
+  </div>
+  <h3>By category</h3>${tbl(Object.entries(m.byCat).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${v.n}</td><td class="num">${v.rc}</td><td class="num">${Math.round(v.kg)}</td></tr>`),['Category','Transactions','RC issued','kg diverted'])}
+  <h3>Members by source</h3>${tbl(Object.entries(m.bySrc).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${v}</td></tr>`),['Source','New members'])}
+  <h3>Partner ROI</h3>${tbl(Object.entries(m.byRet).map(([k,v])=>`<tr><td class="wrap">${esc(k)}</td><td class="num">${v.issued}</td><td class="num">${v.validated}</td><td class="num">${v.expired}</td><td class="num">${v.sales?money(v.sales):'—'}</td></tr>`),['Retailer · offer','Issued','Validated','Expired','Attributed sales'])}
+  <p class="tiny muted">Revenue per transaction is a fee-model parameter, not something the app measures — it is deliberately left out until the model is agreed.</p>`;
+}
+function adminMembers(){
+  const sel = S.ui.memberView ? member(S.ui.memberView) : null;
+  const q = (S.ui.mq||'').toLowerCase();
+  const rows = S.members.filter(m=>!q || [m.memberNo,m.displayName,m.shortCode,m.email].join(' ').toLowerCase().includes(q));
+  const list = `<header><h2>Members</h2><input type="text" placeholder="Search members" value="${esc(S.ui.mq||'')}" data-action="mq" style="max-width:280px"></header>
+  ${rows.length?`<div class="tw"><table><thead><tr><th>Member</th><th>Name</th><th>Code</th><th>Balance</th><th>Source</th><th>Joined</th><th>Status</th><th></th></tr></thead><tbody>${rows.map(m=>`<tr><td class="mono">${esc(m.memberNo)}</td><td>${esc(m.displayName)}</td><td class="mono">${esc(m.shortCode)}</td><td class="num">${balance(m.id)} RC</td><td>${esc(m.source)}</td><td>${fmtDate(m.joinedAt)}</td><td>${pill(m.status)}</td><td><button class="btn sm" type="button" data-action="member-view" data-id="${m.id}">View</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No members yet.</div>'}`;
+  if(!sel) return list;
+  const ls = S.ledger.filter(l=>l.memberId===sel.id).slice().reverse();
+  return list + `<div class="card stack"><div class="row between"><h3>${esc(sel.displayName)} · ${esc(sel.memberNo)}</h3><div class="row"><button class="btn sm ${sel.status==='active'?'danger':'primary'}" type="button" data-action="member-toggle" data-id="${sel.id}">${sel.status==='active'?'Suspend':'Reactivate'}</button><button class="btn sm ghost" type="button" data-action="member-view" data-id="">Close</button></div></div>
+    <div class="small muted">Balance <b class="num">${balance(sel.id)} RC</b> · ${esc(sel.email||sel.mobile)} · postcode ${esc(sel.postcode||'—')} · marketing ${sel.marketingOptIn?'in':'out'} · this view was logged to the audit trail</div>
+    <form id="adjustForm" class="row"><input type="number" id="adjDelta" placeholder="± RC" style="max-width:110px"><input type="text" id="adjReason" placeholder="Reason (required)" style="max-width:300px"><button class="btn sm" type="submit">Manual adjustment</button></form>
+    <div class="tw"><table><thead><tr><th>When</th><th>Type</th><th>Detail</th><th>Δ RC</th><th>By</th></tr></thead><tbody>${ls.map(l=>`<tr><td>${fmtDateTime(l.at)}</td><td>${esc(l.type)}</td><td class="wrap">${esc(l.reason)}</td><td class="num">${l.delta>0?'+':''}${l.delta}</td><td>${esc(actorName(l.by))}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">No ledger entries.</td></tr>'}</tbody></table></div></div>`;
+}
+function adminTransactions(){
+  const tx = S.transactions.slice().sort((a,b)=>b.at-a.at);
+  return `<header><h2>Transactions</h2><span class="small muted">${tx.length} total</span></header>
+  ${tx.length?`<div class="tw"><table><thead><tr><th>When</th><th>Member</th><th>Facility</th><th>Category</th><th>Qty</th><th>RC</th><th>kg</th><th>Operator</th><th>Status</th><th>Action</th></tr></thead><tbody>${tx.map(t=>`<tr><td>${fmtDateTime(t.at)}</td><td>${esc(member(t.memberId).displayName)}</td><td>${esc(facility(t.facilityId).name)}</td><td>${esc(category(t.categoryId).name)}${t.mult>1?` <span class="pill info">${t.mult}×</span>`:''}</td><td class="num">${t.qty}${category(t.categoryId).unit==='kg'?' kg':''}</td><td class="num">${t.rc}</td><td class="num">${Math.round(t.kg)}</td><td>${esc(operator(t.operatorId).name)}</td><td>${pill(t.status)}${t.flagReason&&t.status!=='verified'?`<div class="tiny muted wrap" style="white-space:normal;max-width:160px">${esc(t.reverseReason||t.flagReason)}</div>`:''}</td><td>${t.status==='verified'?`<div class="row" style="flex-wrap:nowrap"><input type="text" placeholder="Reason" data-reason style="width:7.5rem"><button class="btn sm danger" type="button" data-action="reject" data-tx="${t.id}" data-actor="admin">Reverse</button></div>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No transactions yet.</div>'}`;
+}
+function adminRedemptions(){
+  const rds = S.redemptions.slice().sort((a,b)=>b.issuedAt-a.issuedAt);
+  return `<header><h2>Redemptions</h2></header>${rds.length?`<div class="tw"><table><thead><tr><th>Issued</th><th>Code</th><th>Member</th><th>Offer</th><th>RC</th><th>Status</th><th>Validated</th><th>Sale</th></tr></thead><tbody>${rds.map(r=>`<tr><td>${fmtDateTime(r.issuedAt)}</td><td class="mono">${esc(r.code)}</td><td>${esc(member(r.memberId).displayName)}</td><td>${esc(offer(r.offerId).title)}</td><td class="num">${r.rc}</td><td>${pill(r.status)}</td><td>${r.validatedAt?fmtDateTime(r.validatedAt)+' · '+esc(retailer(r.retailerId).name):'—'}</td><td class="num">${r.saleAmount?money(r.saleAmount):'—'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No redemptions yet.</div>'}`;
+}
+function adminCategories(){
+  return `<header><h2>Material categories</h2><span class="legend-ph">Amber = placeholder value, to be set by Richard</span></header>
+  <form id="catForm"><div class="tw"><table><thead><tr><th>Category</th><th>Unit</th><th>Base RC</th><th>Min</th><th>Max</th><th>kg / item</th><th>Active</th></tr></thead><tbody>${S.categories.map(c=>`<tr data-cat="${c.id}"><td>${esc(c.name)}${c.placeholder?' <span class="pill warn">placeholder</span>':''}</td><td><select name="unit"><option value="item" ${c.unit==='item'?'selected':''}>item</option><option value="kg" ${c.unit==='kg'?'selected':''}>kg</option></select></td><td><input type="number" name="baseRC" value="${c.baseRC}" step="0.5" min="0"></td><td><input type="number" name="minQty" value="${c.minQty}" min="0"></td><td><input type="number" name="maxQty" value="${c.maxQty}" min="0"></td><td><input type="number" name="kgPerItem" value="${c.kgPerItem}" min="0"></td><td><input type="checkbox" name="active" ${c.active?'checked':''}></td></tr>`).join('')}</tbody></table></div>
+  <div class="row" style="margin-top:.7rem"><button class="btn primary sm" type="submit">Save categories</button><span class="tiny muted">Changes apply to the next transaction. Every save is written to the audit log.</span></div></form>
+  <form id="catAdd" class="form-grid card"><div class="field"><label>New category</label><input type="text" id="ncName" placeholder="Name"></div><div class="field"><label>Unit</label><select id="ncUnit"><option value="item">item</option><option value="kg">kg</option></select></div><div class="field"><label>Base RC</label><input type="number" id="ncRC" value="0" step="0.5"></div><button class="btn sm" type="submit">Add</button></form>`;
+}
+function adminCampaigns(){
+  return `<header><h2>Sponsored campaigns</h2></header>
+  ${S.campaigns.length?`<div class="tw"><table><thead><tr><th>Campaign</th><th>Sponsor</th><th>Multiplier</th><th>Categories</th><th>Dates</th><th>Bonus used / cap</th><th>Status</th><th></th></tr></thead><tbody>${S.campaigns.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.sponsor)}</td><td class="num">${c.multiplier}×</td><td>${c.categoryIds.map(id=>esc(category(id).name)).join(', ')}</td><td>${esc(c.starts)} → ${esc(c.ends)}</td><td class="num">${c.bonusUsed} / ${c.bonusCap} RC</td><td>${c.active?pill('active'):'<span class="pill neutral">off</span>'}</td><td><button class="btn sm ${c.active?'':'primary'}" type="button" data-action="campaign-toggle" data-id="${c.id}">${c.active?'Turn off':'Activate'}</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No campaigns.</div>'}
+  <form id="campAdd" class="form-grid card"><div class="field"><label>Name</label><input type="text" id="cpName" placeholder="e.g. Brand X 2× e-waste"></div><div class="field"><label>Sponsor</label><input type="text" id="cpSponsor"></div><div class="field"><label>Multiplier</label><select id="cpMult"><option value="2">2×</option><option value="3">3×</option><option value="1.5">1.5×</option></select></div><div class="field"><label>Category</label><select id="cpCat">${opt(S.categories)}</select></div><div class="field"><label>Ends</label><input type="date" id="cpEnds" value="${todayKey(now()+30*86400000)}"></div><div class="field"><label>Bonus cap (RC)</label><input type="number" id="cpCap" value="1000"></div><button class="btn sm" type="submit">Add campaign</button></form>`;
+}
+function adminOffers(){
+  return `<header><h2>Retailer offers</h2></header>
+  <div class="tw"><table><thead><tr><th>Retailer</th><th>Offer</th><th>RC cost</th><th>Min spend</th><th>Cost to store</th><th>Valid days</th><th>Issued / cap</th><th>Active</th></tr></thead><tbody>${S.offers.map(o=>{ const st=S.redemptions.filter(r=>r.offerId===o.id); return `<tr><td>${esc(retailer(o.retailerId).name)}</td><td class="wrap"><b>${esc(o.title)}</b><div class="tiny muted">${esc(o.reward)}</div></td><td class="num">${o.rcCost}</td><td class="num">${o.minSpend?money(o.minSpend):'—'}</td><td class="num">${offerCost(o)?money(offerCost(o)):'$0'}</td><td class="num">${o.validityDays}</td><td class="num">${st.length} (${st.filter(r=>r.status==='validated').length} used) / ${o.stockCap||'∞'}</td><td><button class="btn sm ${o.active?'':'primary'}" type="button" data-action="offer-toggle" data-id="${o.id}">${o.active?'Turn off':'Activate'}</button></td></tr>`; }).join('')}</tbody></table></div>
+  <form id="offerAdd" class="form-grid card"><div class="field"><label>Retailer</label><select id="ofRet">${opt(S.retailers)}</select></div><div class="field"><label>Title</label><input type="text" id="ofTitle" placeholder="$50 off a washer"></div><div class="field"><label>Reward detail</label><input type="text" id="ofReward" placeholder="$50 off any washer over $800"></div><div class="field"><label>RC cost</label><input type="number" id="ofCost" value="100"></div><div class="field"><label>Min spend $</label><input type="number" id="ofMin" value="0"></div><div class="field"><label>Cost to store $ (0 = service reward)</label><input type="number" id="ofCostValue" value="0"></div><div class="field"><label>Valid days</label><input type="number" id="ofDays" value="14"></div><div class="field"><label>Stock cap (0 = none)</label><input type="number" id="ofCap" value="0"></div><button class="btn sm" type="submit">Add offer</button></form>`;
+}
+function adminRetailers(){
+  return `<header><h2>Retail partners</h2></header>
+  <div class="tw"><table><thead><tr><th>Retailer</th><th>Contact</th><th>Store PIN</th><th>Offers</th><th>Validated</th><th>Active</th></tr></thead><tbody>${S.retailers.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(r.contact)}</td><td class="mono">${esc(r.pin)}</td><td class="num">${S.offers.filter(o=>o.retailerId===r.id).length}</td><td class="num">${S.redemptions.filter(x=>x.retailerId===r.id&&x.status==='validated').length}</td><td>${r.active?pill('active'):'<span class="pill neutral">off</span>'}</td></tr>`).join('')}</tbody></table></div>
+  <form id="retAdd" class="form-grid card"><div class="field"><label>Name</label><input type="text" id="rtName"></div><div class="field"><label>Contact email</label><input type="email" id="rtContact"></div><div class="field"><label>Store PIN</label><input type="text" id="rtPin" value="${rnd(4,'0123456789')}"></div><button class="btn sm" type="submit">Add retailer</button></form>
+  <p class="tiny muted">In the live product PINs are hashed and never displayed. They are visible here only for the pilot preview.</p>`;
+}
+function adminFacilities(){
+  return `<header><h2>Facilities and staff</h2></header>
+  <form id="facForm"><div class="tw"><table><thead><tr><th>Facility</th><th>Suburb</th><th>Accredited</th><th>Daily RC cap</th><th>Issued today</th></tr></thead><tbody>${S.facilities.map(f=>{ const tk=todayKey(); const rc=S.transactions.filter(t=>t.facilityId===f.id&&todayKey(t.at)===tk&&t.status==='verified').reduce((a,t)=>a+t.rc,0); return `<tr data-fac="${f.id}"><td>${esc(f.name)}</td><td>${esc(f.suburb)}, ${esc(f.state)}</td><td><input type="checkbox" name="accredited" ${f.accredited?'checked':''}></td><td><input type="number" name="dailyCap" value="${f.dailyCap}"></td><td class="num">${rc} RC</td></tr>`; }).join('')}</tbody></table></div><button class="btn sm primary" type="submit" style="margin-top:.6rem">Save facilities</button></form>
+  <h3>Operators</h3>
+  <div class="tw"><table><thead><tr><th>Name</th><th>Facility</th><th>Role</th><th>RC issued today</th><th>Active</th></tr></thead><tbody>${S.operators.map(o=>{ const tk=todayKey(); const rc=S.transactions.filter(t=>t.operatorId===o.id&&todayKey(t.at)===tk&&t.status==='verified').reduce((a,t)=>a+t.rc,0); return `<tr><td>${esc(o.name)}</td><td>${esc(facility(o.facilityId).name)}</td><td>${o.role==='site_manager'?'Site manager':'Operator'}</td><td class="num">${rc}</td><td><button class="btn sm ${o.active?'':'primary'}" type="button" data-action="op-toggle" data-id="${o.id}">${o.active?'Deactivate':'Activate'}</button></td></tr>`; }).join('')}</tbody></table></div>
+  <form id="opAdd" class="form-grid card"><div class="field"><label>Name</label><input type="text" id="opName"></div><div class="field"><label>Facility</label><select id="opFac">${opt(S.facilities)}</select></div><div class="field"><label>Role</label><select id="opRole"><option value="operator">Operator</option><option value="site_manager">Site manager</option></select></div><button class="btn sm" type="submit">Add operator</button></form>`;
+}
+function adminAudit(){
+  const a = S.audit.slice(0,200);
+  return `<header><h2>Audit log</h2><span class="small muted">${S.audit.length} entries</span></header>${a.length?`<div class="tw"><table><thead><tr><th>When</th><th>Actor</th><th>Action</th><th>Entity</th><th>Reason / detail</th></tr></thead><tbody>${a.map(x=>`<tr><td>${fmtDateTime(x.at)}</td><td>${esc(x.actor)}</td><td>${esc(x.action)}</td><td>${esc(x.entity)} <span class="mono tiny">${esc(x.entityId)}</span></td><td class="wrap">${esc(x.reason||(x.after?JSON.stringify(x.after):''))}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Nothing logged yet.</div>'}`;
+}
+function adminSettings(){
+  const s=S.settings;
+  return `<header><h2>Settings</h2></header>
+  <form id="settingsAdmin" class="form-grid card">
+    <div class="field"><label>Per-category transactions per member per day</label><input type="number" id="stVel" value="${s.velocityPerCategoryPerDay}" min="1"></div>
+    <div class="field"><label>Review threshold (RC per transaction)</label><input type="number" id="stThr" value="${s.reviewThresholdRC}" min="1"></div>
+    <div class="field"><label>QR token life (minutes)</label><input type="number" id="stTok" value="${s.tokenMinutes}" min="1"></div>
+    <div class="field"><label>Default code validity (days)</label><input type="number" id="stDays" value="${s.codeValidityDays}" min="1"></div>
+    <button class="btn sm primary" type="submit">Save settings</button></form>
+  <form id="spendForm" class="form-grid card"><div class="field"><label>Marketing spend for a week (enter the week's date)</label><input type="date" id="spDate" value="${todayKey()}"></div><div class="field"><label>Amount $</label><input type="number" id="spAmt" value="0" min="0"></div><button class="btn sm" type="submit">Record spend</button><div class="tiny muted">Entered: ${Object.entries(S.spend).map(([k,v])=>`${k} ${money(v)}`).join(' · ')||'none'}</div></form>
+  <div class="card soft small"><b>Deliberately off in the pilot:</b> credit expiry and inactivity rules (awaiting legal advice) · fee model parameters (awaiting agreed model) · "Recycle Bank" branding (awaiting APRA and trademark).</div>`;
+}
+
+/* ===================== RENDER + EVENTS ===================== */
+let _rendering=false, _renderQueued=false;
+function render(){
+  if(_rendering){ if(!_renderQueued){ _renderQueued=true; setTimeout(()=>{ _renderQueued=false; render(); },0); } return; }
+  _rendering=true;
+  try{ _renderInner(); } finally { _rendering=false; }
+}
+function _renderInner(){
+  if(qrTimer){ clearInterval(qrTimer); qrTimer=null; }
+  const ae=document.activeElement; if(ae && stage.contains(ae) && ae.tagName!=='BODY'){ try{ ae.blur(); }catch(e){} }
+  document.querySelectorAll('.roles button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.role===S.ui.role)));
+  ({start:renderStart,member:renderMember,counter:renderCounter,retailer:renderRetailer,admin:renderAdmin}[S.ui.role]||renderMember)();
+  window.scrollTo({top:0});
+}
+function reasonNear(btn){ const wrap=btn.parentElement && btn.parentElement.closest('.row, tr, [data-tx]'); const inp = wrap && wrap.querySelector('[data-reason]'); return inp ? inp.value.trim() : ''; }
+
+document.querySelector('.roles').addEventListener('click', e=>{ const b=e.target.closest('button[data-role]'); if(b) setRole(b.dataset.role); });
+document.getElementById('btnReset').addEventListener('click', ()=>{ S=blank(); seedBase(S); save(); toast('Cleared. Back to a clean pilot setup.'); render(); });
+document.getElementById('btnDemo').addEventListener('click', ()=>{ loadDemo(); toast('Sample data loaded: a month of members, recycling, redemptions and one held transaction','ok'); render(); });
+
+stage.addEventListener('click', e=>{
+  const a = e.target.closest('[data-action]'); if(!a) return;
+  const act = a.dataset.action;
+  if(a.tagName==='A') e.preventDefault();
+  if(act==='noop') return;
+  if(act==='wtab') return ui({wtab:a.dataset.tab});
+  if(act==='ctab') return ui({ctab:a.dataset.tab});
+  if(act==='rtab') return ui({rtab:a.dataset.tab});
+  if(act==='start-go'){ const r=a.dataset.role; const patch={role:r}; if(r==='retailer' && !S.ui.retailerAuthed){ const st=S.retailers.find(x=>x.active); if(st) patch.retailerAuthed=st.id; patch.rtab='numbers'; } if(r==='member') patch.wtab='home'; return ui(patch); }
+  if(act==='start-walk'){ try{ sessionStorage.setItem('rc-wt-seen','1'); }catch(e){} return runWalkthrough(0); }
+  if(act==='load-sample'){ const keep={role:S.ui.role,retailerAuthed:S.ui.retailerAuthed,rtab:S.ui.rtab}; loadDemo(); Object.assign(S.ui,keep); save(); toast('Sample month loaded','ok'); return render(); }
+  if(act==='csv'){ return downloadCSV(numbersCSV(S.ui.retailerAuthed,a.dataset.month||null), (retailer(S.ui.retailerAuthed).name+'-recycle-credits-'+(a.dataset.month||'all')).replace(/\s+/g,'-').toLowerCase()+'.csv'); }
+  if(act==='atab') return ui({atab:a.dataset.tab, memberView:null});
+  if(act==='refresh-qr'){ issueToken(S.ui.memberId); return render(); }
+  if(act==='simulate-scan'){ const r=resolveToken(a.dataset.token); if(r.err){ toast(r.err,'bad'); return; } ui({role:'counter',ctab:'scan',counterMember:{memberId:r.token.memberId,token:r.token.token,at:now()},counterCat:null,counterQty:1,counterResult:null}); toast('QR scanned — member loaded at the counter','ok'); return; }
+  if(act==='counter-cat'){ const c=category(a.dataset.cat); return ui({counterCat:c.id, counterQty: c.unit==='kg'? Math.max(c.minQty,10) : 1}); }
+  if(act==='qty'){ const c=category(S.ui.counterCat); const step = c.unit==='kg'?5:1; return ui({counterQty: Math.max(0, (Number(S.ui.counterQty)||0) + Number(a.dataset.d)*step)}); }
+  if(act==='issue'){ const cm=S.ui.counterMember; const qty=Number(document.getElementById('qtyInput').value); const photo=document.getElementById('photoChk').checked; const r=issueCredits(cm.token, S.ui.counterCat, qty, S.ui.operatorId, {photo}); if(!r.ok){ toast(r.msg,'bad'); return; } const landed = r.tx && r.tx.status==='verified' ? {memberId:r.tx.memberId, rc:r.tx.rc, cat:category(r.tx.categoryId).name, qty:r.tx.qty, kg:Math.round(r.tx.kg), id:r.tx.id} : null; ui({counterResult:r, counterMember:null, counterCat:null, landed}); return; }
+  if(act==='counter-next') return ui({counterMember:null,counterCat:null,counterQty:1,counterResult:null});
+  if(act==='approve'){ approveTransaction(a.dataset.tx, a.dataset.actor, reasonNear(a)); toast('Approved — credits issued','ok'); return render(); }
+  if(act==='reject'){ const reason=reasonNear(a); if(!reason){ toast('A reason is required to reject or reverse.','bad'); return; } rejectTransaction(a.dataset.tx, a.dataset.actor, reason); toast('Done — recorded in the audit log'); return render(); }
+  if(act==='redeem'){ const r=redeemOffer(S.ui.memberId, a.dataset.offer); if(!r.ok){ toast(r.msg,'bad'); return; } S.ui.lastCode=r.rd.code; toast('Redeemed! Your code is under Rewards.','ok'); return ui({wtab:'rewards'}); }
+  if(act==='request-delete'){ audit('member','deletion_request','Member',S.ui.memberId,'Member requested account deletion'); save(); toast('Request sent to '+S.settings.supportEmail+'. We\'ll confirm by email.','ok'); return; }
+  if(act==='retailer-signout') return ui({retailerAuthed:null, retailerCheck:null});
+  if(act==='member-view'){ if(a.dataset.id){ audit('admin','member_view','Member',a.dataset.id,''); save(); } return ui({memberView:a.dataset.id||null}); }
+  if(act==='member-toggle'){ const m=member(a.dataset.id); const before=m.status; m.status = m.status==='active'?'suspended':'active'; audit('admin','status','Member',m.id,'',{status:before},{status:m.status}); save(); return render(); }
+  if(act==='campaign-toggle'){ const c=by(S.campaigns,a.dataset.id); c.active=!c.active; audit('admin',c.active?'activate':'deactivate','Campaign',c.id,''); save(); return render(); }
+  if(act==='offer-toggle'){ const o=offer(a.dataset.id); o.active=!o.active; audit('admin',o.active?'activate':'deactivate','Offer',o.id,''); save(); return render(); }
+  if(act==='op-toggle'){ const o=operator(a.dataset.id); o.active=!o.active; audit('admin',o.active?'activate':'deactivate','Operator',o.id,''); save(); return render(); }
+});
+stage.addEventListener('change', e=>{
+  const a=e.target.closest('[data-action]'); if(!a) return;
+  const act=a.dataset.action;
+  if(act==='switch-member'){ if(a.value==='__new') return ui({memberId:null}); if(a.value) return ui({memberId:a.value, wtab:'home'}); }
+  if(act==='switch-operator') return ui({operatorId:a.value, ctab:'scan', counterMember:null, counterResult:null});
+  if(act==='mrange') return ui({mrange:a.value});
+  if(act==='rmonth') return ui({rmonth:a.value});
+  if(act==='qty-input') { S.ui.counterQty=Number(a.value); save(); return render(); }
+});
+stage.addEventListener('input', e=>{ const a=e.target.closest('[data-action="mq"]'); if(a){ S.ui.mq=a.value; save(); const list=document.querySelector('.abody'); if(list){ const pos=a.selectionStart; render(); const n=document.querySelector('[data-action="mq"]'); if(n){ n.focus(); n.setSelectionRange(pos,pos);} } } });
+stage.addEventListener('submit', e=>{
+  e.preventDefault(); const f=e.target; const v=id=>{ const el=document.getElementById(id); return el?el.value:''; };
+  try{
+    if(f.id==='joinForm'){ const m=joinMember({displayName:v('jName'),email:v('jEmail'),mobile:v('jMobile'),postcode:v('jPostcode'),source:v('jSource'),marketing:document.getElementById('jMarketing').checked}); toast('Welcome, '+m.displayName+'. Your wallet is ready.','ok'); return ui({memberId:m.id,wtab:'home'}); }
+    if(f.id==='settingsForm'){ const m=member(S.ui.memberId); m.displayName=v('sName').trim()||m.displayName; m.postcode=v('sPostcode').trim(); m.marketingOptIn=document.getElementById('sMarketing').checked; save(); toast('Saved','ok'); return ui({wtab:'home'}); }
+    if(f.id==='shortForm'){ const r=resolveShortCode(v('shortCode')); if(r.err){ toast(r.err,'bad'); return; } return ui({counterMember:{memberId:r.token.memberId,token:r.token.token,at:now()},counterCat:null,counterQty:1}); }
+    if(f.id==='pinForm'){ const r=retailer(v('pinStore')); if(!r){ toast('Pick a store.','bad'); return; } return ui({retailerAuthed:r.id, retailerCheck:null}); }
+    if(f.id==='codeForm'){ const c=checkCode(v('codeInput')); return ui({retailerCheck: c.err?{err:c.err,code:v('codeInput')}:{code:c.rd.code,rd:c.rd,offer:c.offer,member:c.member,status:c.status}}); }
+    if(f.id==='useForm'){ const r=validateCode(S.ui.retailerCheck.code, S.ui.retailerAuthed, v('saleAmount')); if(!r.ok){ toast(r.msg,'bad'); return; } toast('Reward marked as used','ok'); return ui({retailerCheck:null}); }
+    if(f.id==='adjustForm'){ const d=Number(v('adjDelta')); const reason=v('adjReason').trim(); if(!d||!reason){ toast('Enter an amount and a reason.','bad'); return; } adjustMember(S.ui.memberView,d,'admin',reason); toast('Adjustment recorded','ok'); return render(); }
+    if(f.id==='catForm'){ f.querySelectorAll('tr[data-cat]').forEach(tr=>{ const c=category(tr.dataset.cat); const g=n=>tr.querySelector(`[name="${n}"]`); const before={...c}; c.unit=g('unit').value; c.baseRC=Number(g('baseRC').value); c.minQty=Number(g('minQty').value); c.maxQty=Number(g('maxQty').value); c.kgPerItem=Number(g('kgPerItem').value); c.active=g('active').checked; if(JSON.stringify(before)!==JSON.stringify(c)){ c.placeholder=false; audit('admin','edit','MaterialCategory',c.id,'',{baseRC:before.baseRC,min:before.minQty,max:before.maxQty},{baseRC:c.baseRC,min:c.minQty,max:c.maxQty}); } }); save(); toast('Categories saved','ok'); return render(); }
+    if(f.id==='catAdd'){ if(!v('ncName')) return; S.categories.push({id:uid('C'),name:v('ncName'),unit:v('ncUnit'),baseRC:Number(v('ncRC')),minQty:1,maxQty:10,kgPerItem:10,active:true,placeholder:true}); audit('admin','create','MaterialCategory','',v('ncName')); save(); return render(); }
+    if(f.id==='campAdd'){ if(!v('cpName')) return; S.campaigns.push({id:uid('CP'),name:v('cpName'),sponsor:v('cpSponsor'),multiplier:Number(v('cpMult')),categoryIds:[v('cpCat')],facilityIds:[],starts:todayKey(),ends:v('cpEnds'),bonusCap:Number(v('cpCap')),bonusUsed:0,active:true}); audit('admin','create','Campaign','',v('cpName')); save(); toast('Campaign live','ok'); return render(); }
+    if(f.id==='offerAdd'){ if(!v('ofTitle')) return; S.offers.push({id:uid('OF'),retailerId:v('ofRet'),title:v('ofTitle'),reward:v('ofReward'),rcCost:Number(v('ofCost')),minSpend:Number(v('ofMin')),costValue:Number(v('ofCostValue'))||0,terms:'',validityDays:Number(v('ofDays'))||14,stockCap:Number(v('ofCap')),stockUsed:0,active:true}); audit('admin','create','Offer','',v('ofTitle')); save(); return render(); }
+    if(f.id==='retAdd'){ if(!v('rtName')) return; S.retailers.push({id:uid('R'),name:v('rtName'),contact:v('rtContact'),pin:v('rtPin')||'0000',active:true}); audit('admin','create','Retailer','',v('rtName')); save(); return render(); }
+    if(f.id==='facForm'){ f.querySelectorAll('tr[data-fac]').forEach(tr=>{ const fc=facility(tr.dataset.fac); fc.accredited=tr.querySelector('[name=accredited]').checked; fc.dailyCap=Number(tr.querySelector('[name=dailyCap]').value); }); audit('admin','edit','Facility','',''); save(); toast('Saved','ok'); return render(); }
+    if(f.id==='opAdd'){ if(!v('opName')) return; S.operators.push({id:uid('O'),name:v('opName'),facilityId:v('opFac'),role:v('opRole'),active:true}); audit('admin','create','Operator','',v('opName')); save(); return render(); }
+    if(f.id==='settingsAdmin'){ Object.assign(S.settings,{velocityPerCategoryPerDay:Number(v('stVel')),reviewThresholdRC:Number(v('stThr')),tokenMinutes:Number(v('stTok')),codeValidityDays:Number(v('stDays'))}); audit('admin','edit','Settings','',''); save(); toast('Settings saved','ok'); return render(); }
+    if(f.id==='spendForm'){ S.spend[v('spDate')]=Number(v('spAmt')); save(); toast('Spend recorded','ok'); return render(); }
+  }catch(err){ toast(err.message||'Something went wrong','bad'); }
+});
+
+load(); render();
+</script>
+<style>
+/* walkthrough */
+#wtStart{position:fixed;inset:0;z-index:60;background:rgba(6,20,18,.72);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:1rem;overflow:auto}
+#wtStart .box{max-height:calc(100vh - 2rem);max-height:calc(100dvh - 2rem);overflow:auto}
+#wtStart .box{background:var(--teal);color:var(--teal-ink);border-radius:18px;padding:1.6rem 1.5rem;max-width:460px;width:100%;display:grid;gap:.9rem;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08)}
+#wtStart h2{color:#fff;font-size:1.5rem}
+#wtStart p{color:var(--teal-muted);font-size:.95rem}
+#wtStart .btn.ghost{color:var(--teal-ink);border-color:rgba(255,255,255,.25)}
+#wtCursor{position:fixed;left:0;top:0;width:26px;height:26px;border-radius:50%;background:var(--lime);border:3px solid #0F2A12;box-shadow:0 0 0 6px rgba(131,198,74,.25),0 4px 12px rgba(0,0,0,.35);z-index:70;pointer-events:none;transform:translate(-50%,-50%);transition:left .5s cubic-bezier(.4,0,.2,1),top .5s cubic-bezier(.4,0,.2,1);display:none}
+#wtCursor.tap{animation:tap .3s ease-out}
+@keyframes tap{0%{transform:translate(-50%,-50%) scale(1)}40%{transform:translate(-50%,-50%) scale(.7)}100%{transform:translate(-50%,-50%) scale(1)}}
+.wt-hl{outline:3px solid var(--lime) !important;outline-offset:3px;border-radius:10px;transition:outline-color .2s}
+#wtBar{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:65;width:min(680px,calc(100vw - 2rem));background:var(--teal);color:var(--teal-ink);border-radius:14px;padding:.9rem 1.1rem;box-shadow:0 20px 50px -15px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08);display:none;grid-template-columns:1fr auto;gap:.6rem 1rem;align-items:center}
+#wtBar.on{display:grid}
+#wtBar .step{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lime-2)}
+#wtBar .cap{font-size:1rem;line-height:1.45;color:#fff}
+#wtBar .hint{margin-top:.3rem;font-size:.8rem;font-weight:600;color:var(--lime-2);animation:nudge 1.2s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+#wtBar .ctl{display:flex;gap:.35rem}
+#wtBar .ctl button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:8px;padding:.35rem .7rem;cursor:pointer;font-size:.82rem;min-height:36px}
+#wtBar .ctl button:hover{background:rgba(255,255,255,.16)}
+#wtBar .prog{grid-column:1/-1;height:3px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden}
+#wtBar .prog i{display:block;height:100%;background:var(--lime);width:0;transition:width .4s}
+body.wt-active .stage{padding-bottom:9rem}
+body.wt-active .toast{bottom:8.5rem}
+@media (max-width:600px){#wtBar{grid-template-columns:1fr}#wtBar .ctl{justify-content:flex-end}}
+@media (prefers-reduced-motion:reduce){#wtCursor{transition:none}#wtCursor.tap{animation:none}#wtBar .hint{animation:none}}
+</style>
+<div id="wtCursor" aria-hidden="true"></div>
+<div id="wtBar" role="status" aria-live="polite"><div><div class="step" id="wtStep"></div><div class="cap" id="wtCap"></div><div class="hint" id="wtHint" hidden>↓ Scroll down to see this step</div></div><div class="ctl"><button type="button" id="wtPause">Pause</button><button type="button" id="wtNext">Next</button><button type="button" id="wtExit">Exit</button></div><div class="prog"><i id="wtProg"></i></div></div>
+<script>
+/* ===================== WALKTHROUGH ===================== */
+const WT = { running:false, paused:false, abort:false, idx:0, speed:1, skip:false };
+const cursor = document.getElementById('wtCursor'), bar = document.getElementById('wtBar');
+const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function wtWait(ms){ return new Promise(res=>{ const end = now()+ms/WT.speed; (function tick(){ if(WT.abort||WT.skip) return res(); if(WT.paused) return setTimeout(tick,120); if(now()>=end) return res(); setTimeout(tick,60); })(); }); }
+function centre(el){ const r=el.getBoundingClientRect(); return {x:r.left+r.width/2, y:r.top+Math.min(r.height/2, 40)}; }
+function topOffset(){ const cs=getComputedStyle(document.documentElement); const sh=parseFloat(cs.getPropertyValue('--shell-h'))||0; const wb=window.matchMedia('(max-width:640px)').matches ? (parseFloat(cs.getPropertyValue('--wtbar-h'))||0) : 0; return sh+wb+8; }
+function bottomOffset(){ const nav=document.querySelector('.wnav'); const small=window.matchMedia('(max-width:640px)').matches; let b = small && nav ? nav.getBoundingClientRect().height : 0; if(!small && bar.classList.contains('on')) b += bar.getBoundingClientRect().height+16; return b; }
+function wtScroll(el){ const r=el.getBoundingClientRect(); const top=topOffset(), bot=bottomOffset(); const avail=window.innerHeight-top-bot; let target = window.scrollY + r.top - top - Math.max(0,(avail-r.height)/2); if(r.height>avail) target = window.scrollY + r.top - top - 8; target=Math.max(0,Math.min(target, document.documentElement.scrollHeight-window.innerHeight)); return new Promise(res=>{ const start=window.scrollY, dist=target-start; if(Math.abs(dist)<2||reduced||WT.skip||WT.abort){ window.scrollTo(0,target); return res(); } const t0=performance.now(), dur=Math.min(600, 250+Math.abs(dist)*0.4)/WT.speed; (function step(t){ if(WT.skip||WT.abort){ window.scrollTo(0,target); return res(); } const k=Math.min(1,(t-t0)/dur); const e=1-Math.pow(1-k,3); window.scrollTo(0, start+dist*e); if(k<1) requestAnimationFrame(step); else res(); })(t0); }); }
+function inView(el){ const r=el.getBoundingClientRect(); const top=topOffset(), bot=bottomOffset(); return r.bottom>top && r.top<window.innerHeight-bot; }
+function hint(on){ const h=document.getElementById('wtHint'); if(h) h.hidden=!on; }
+async function moveTo(el){ const r0=el.getBoundingClientRect(); if(r0.width===0&&r0.height===0){ cursor.style.display='none'; return; } await wtScroll(el); await wtWait(120); hint(!inView(el)); const c=centre(el); cursor.style.display='block'; cursor.style.left=c.x+'px'; cursor.style.top=c.y+'px'; await wtWait(550); }
+async function press(sel, hold){ if(WT.abort) return false; const el=document.querySelector(sel); if(!el){ if(!WT.abort) console.warn('walkthrough: missing',sel); return false; } await moveTo(el); el.classList.add('wt-hl'); await wtWait(hold||450); cursor.classList.remove('tap'); void cursor.offsetWidth; cursor.classList.add('tap'); el.classList.remove('wt-hl'); if(WT.abort) return false; el.click(); await wtWait(500); return true; }
+async function type(sel, text){ if(WT.abort) return; const el=document.querySelector(sel); if(!el) return; await moveTo(el); el.classList.add('wt-hl'); el.value=''; for(const ch of text){ if(WT.abort) return; el.value+=ch; el.dispatchEvent(new Event('input',{bubbles:true})); await wtWait(WT.skip?0:55); } el.classList.remove('wt-hl'); el.dispatchEvent(new Event('change',{bubbles:true})); await wtWait(300); }
+async function setNum(sel, val){ if(WT.abort) return; const el=document.querySelector(sel); if(!el) return; await moveTo(el); el.value=val; el.dispatchEvent(new Event('change',{bubbles:true})); await wtWait(400); }
+function cap(text, i, n){ hint(false); document.getElementById('wtCap').textContent=text; document.getElementById('wtStep').textContent='Walkthrough · step '+(i+1)+' of '+n; document.getElementById('wtProg').style.width=((i+1)/n*100)+'%'; }
+function resetClean(){ S=blank(); seedBase(S); save(); }
+
+const STEPS = [
+  { cap:'This is the Recycle Credits pilot app. Members earn credits for verified recycling and spend them with local retailers. Watch it run end to end — nothing here is a mock-up, every button does real work.', run: async()=>{ resetClean(); ui({role:'member',memberId:null,wtab:'home'}); await wtWait(4500); } },
+  { cap:'Joining takes a name and an email or mobile. No date of birth, no ID, no street address — the registry is built for data minimisation from day one.', run: async()=>{ await type('#jName','Sam'); await type('#jEmail','sam@example.com'); await type('#jPostcode','3215'); await wtWait(600); await press('#joinForm button[type=submit]'); await wtWait(2200); } },
+  { cap:'The wallet opens at zero. Credits are a reward unit — the balance never shows a dollar figure, so the platform never carries a cash liability.', run: async()=>{ await wtWait(3500); } },
+  { cap:'Before Sam recycles, a brand sponsors a campaign. In Admin, one switch turns on 2× credits for mattresses this month, with a bonus cap so the sponsor\'s budget can\'t be overrun.', run: async()=>{ await press('.roles button[data-role="admin"]'); await press('[data-action="atab"][data-tab="campaigns"]'); await wtWait(900); await press('[data-action="campaign-toggle"][data-id="CP1"]'); await wtWait(2200); } },
+  { cap:'Back to Sam. "Show my QR" generates a single-use token that expires in 15 minutes. It identifies the wallet, not the person — the recycler never sees Sam\'s contact details.', run: async()=>{ await press('.roles button[data-role="member"]'); await press('[data-action="wtab"][data-tab="qr"]'); await wtWait(3200); } },
+  { cap:'At the North Geelong counter, staff scan the QR. They see a first name and member number only, then a grid of what can be verified. The 2× mattress bonus is already showing.', run: async()=>{ await press('[data-action="simulate-scan"]'); await wtWait(2600); } },
+  { cap:'Two mattresses. Staff choose the category and quantity — they never type a credit amount. The rules engine calculates it: 20 RC × 2 × the sponsor\'s 2× = 80 RC.', run: async()=>{ await press('[data-action="counter-cat"][data-cat="C1"]'); await wtWait(600); await press('[data-action="qty"][data-d="1"]'); await wtWait(1200); await press('[data-action="issue"]'); await wtWait(3200); } },
+  { cap:'The credits land instantly, with the diversion weight recorded against the transaction. Sam\'s wallet now nudges toward the nearest reward.', run: async()=>{ await press('.roles button[data-role="member"]'); await press('[data-action="wtab"][data-tab="home"]'); await wtWait(3500); } },
+  { cap:'A second visit a few days later: a fridge and a washer. Same three-second flow at the counter. Whitegoods have no sponsor this month, so it\'s base credits only.', run: async()=>{ await press('[data-action="wtab"][data-tab="qr"]'); await wtWait(1200); await press('[data-action="simulate-scan"]'); await wtWait(1200); await press('[data-action="counter-cat"][data-cat="C2"]'); await press('[data-action="qty"][data-d="1"]'); await wtWait(800); await press('[data-action="issue"]'); await wtWait(2600); } },
+  { cap:'With 110 RC, Sam can redeem. The offer is funded by the retailer from its marketing margin — the platform never pays face value. Credits leave the wallet the moment the code is issued.', run: async()=>{ await press('.roles button[data-role="member"]'); await press('[data-action="wtab"][data-tab="offers"]'); await wtWait(2200); await press('[data-action="redeem"][data-offer="OF1"]'); await wtWait(3200); } },
+  { cap:'In the shop, staff open a simple check page — no POS integration — enter the code, and mark it used with the sale amount. That one record is the retailer\'s attribution and the pilot\'s partner-ROI evidence.', run: async()=>{ const rd=S.redemptions[S.redemptions.length-1]; await press('.roles button[data-role="retailer"]'); await type('#pinCode','1234'); await press('#pinForm button[type=submit]'); await type('#codeInput', rd?rd.code:''); await press('#codeForm button[type=submit]'); await wtWait(1600); await type('#saleAmount','1899'); await press('#useForm button[type=submit]'); await wtWait(2400); } },
+  { cap:'Fraud control. Sam turns up with 480 kg of scrap steel — worth 240 RC, above the 200 RC single-transaction threshold. The counter accepts it but holds the credits for a site manager.', run: async()=>{ await press('.roles button[data-role="member"]'); await press('[data-action="wtab"][data-tab="qr"]'); await wtWait(900); await press('[data-action="simulate-scan"]'); await wtWait(900); await press('[data-action="counter-cat"][data-cat="C3"]'); await setNum('#qtyInput',480); await wtWait(900); await press('[data-action="issue"]'); await wtWait(3400); } },
+  { cap:'The review queue shows why it was held. Approving writes the ledger entries; rejecting needs a reason. Either way it lands in the audit log — nothing is ever deleted.', run: async()=>{ await press('.roles button[data-role="admin"]'); await press('[data-action="atab"][data-tab="review"]'); await wtWait(2600); await press('[data-action="approve"]'); await wtWait(1800); } },
+  { cap:'Every proof point investors asked for is live from the same ledger: members, verified transactions, kg diverted, redemption rate, partner ROI, fraud rate and the north-star metric.', run: async()=>{ await press('[data-action="atab"][data-tab="metrics"]'); await wtWait(6000); } },
+  { cap:'That\'s the pilot loop. Everything you saw is editable — categories, credit values, campaigns, offers, limits. Exit and try it yourself — or load the sample data to see a full month.', run: async()=>{ await wtWait(5000); } },
+];
+
+async function runWalkthrough(from){
+  if(WT.running) return; WT.running=true; WT.abort=false; WT.paused=false; WT.idx=from||0;
+  document.body.classList.add('wt-active'); bar.classList.add('on'); document.getElementById('wtPause').textContent='Pause';
+  try{
+    while(WT.idx < STEPS.length && !WT.abort){
+      const s=STEPS[WT.idx]; WT.skip=false; cap(s.cap, WT.idx, STEPS.length);
+      await s.run();
+      if(WT.abort) break;
+      WT.idx++;
+    }
+  }catch(e){ console.warn('walkthrough error', e); }
+  endWalkthrough();
+}
+function endWalkthrough(){ WT.running=false; WT.abort=true; document.body.classList.remove('wt-active'); bar.classList.remove('on'); cursor.style.display='none'; document.querySelectorAll('.wt-hl').forEach(e=>e.classList.remove('wt-hl')); }
+document.getElementById('wtPause').addEventListener('click', ()=>{ WT.paused=!WT.paused; document.getElementById('wtPause').textContent = WT.paused?'Resume':'Pause'; });
+document.getElementById('wtNext').addEventListener('click', ()=>{ WT.skip=true; WT.paused=false; document.getElementById('wtPause').textContent='Pause'; });
+document.getElementById('wtExit').addEventListener('click', ()=>{ WT.abort=true; });
+document.addEventListener('keydown', e=>{ if(!WT.running) return; if(e.key==='Escape') WT.abort=true; if(e.key===' '){ e.preventDefault(); document.getElementById('wtPause').click(); } if(e.key==='ArrowRight') document.getElementById('wtNext').click(); });
+
+/* start overlay + shell button */
+(function(){
+  const tools=document.querySelector('.shell .tools');
+  const b=document.createElement('button'); b.type='button'; b.id='btnWalk'; b.textContent='▶ Walkthrough'; b.style.borderColor='rgba(185,230,117,.5)'; b.style.color='#B9E675'; tools.insertBefore(b, tools.firstChild);
+  b.addEventListener('click', ()=>{ if(WT.running){ WT.abort=true; return; } runWalkthrough(0); });
+  let seen=false; try{ seen = sessionStorage.getItem('rc-wt-seen')==='1'; }catch(e){}
+  const params = new URLSearchParams(location.search);
+  if(params.get('explore')==='1') seen=true;
+  if(params.get('v')||params.get('c')) seen=true;   // arriving mid-task from a scanned QR — never interrupt
+  if(!seen && !WT.running){ S.ui.role='start'; save(); try{ sessionStorage.setItem('rc-wt-seen','1'); }catch(e){} }
+  if(params.get('play')==='1'){ setTimeout(()=>runWalkthrough(0), 400); }
+})();
+</script>
+<style>
+/* ===================== MOBILE ===================== */
+@media (max-width:640px){
+  .shell .in{padding:.35rem .6rem;gap:.35rem .5rem}
+  .brand{font-size:.95rem;gap:.35rem}
+  .brand .dot{width:.55rem;height:.55rem}
+  .brand .tag{display:none}
+  .shell .tools{margin-left:auto}
+  .shell .tools button{padding:.25rem .5rem;font-size:.74rem;min-height:30px}
+  .roles{order:3;width:100%;margin:0;display:grid;grid-template-columns:repeat(4,1fr);padding:.15rem}
+  .roles button{padding:.4rem .2rem;font-size:.84rem;min-height:36px}
+  .note{display:none}
+  .stage{padding:0}
+  .phone,.tablet{max-width:none;border-radius:0;border:0;box-shadow:none;min-height:calc(100vh - var(--shell-h,96px))}
+  .desk{border-radius:0;border-left:0;border-right:0;box-shadow:none}
+  .wallet-top{padding:.75rem 1rem .9rem;gap:.35rem}
+  .wallet-top .who{font-size:.78rem}
+  .wallet-top .who select{min-height:30px;font-size:.78rem;max-width:11rem}
+  .balance{font-size:2.6rem}
+  .impact{font-size:.8rem}
+  .wallet-body{padding:.9rem 1rem calc(5.2rem + env(safe-area-inset-bottom))}
+  .wnav{position:fixed;left:0;right:0;bottom:0;z-index:15;padding-bottom:env(safe-area-inset-bottom)}
+  .wnav button{padding:.5rem .2rem .55rem}
+  .chead{padding:.75rem 1rem}
+  .chead h2{font-size:1.1rem}
+  .chead select{min-height:32px;font-size:.8rem}
+  .ctabs{padding:0 .6rem}
+  .cbody{padding:.9rem}
+  .abody{padding:.9rem}
+  .anav{padding:.5rem;gap:.25rem}
+  .anav button{padding:.35rem .6rem;font-size:.82rem;border:1px solid var(--line);border-radius:999px}
+  .anav button[aria-current="page"]{box-shadow:none;background:var(--lime);color:var(--accent-ink);border-color:transparent}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .kpi .v{font-size:1.35rem}
+  .cats{grid-template-columns:repeat(2,1fr)}
+  .cat{min-height:84px;padding:.75rem}
+  .qty button{width:48px;height:48px}
+  .qty input{max-width:110px;min-height:48px}
+  .result .big{font-size:1.6rem}
+  input[type=text],input[type=email],input[type=tel],input[type=number],input[type=date],input[type=password],select,textarea{font-size:16px}
+  .toast{bottom:1rem;font-size:.85rem;padding:.5rem .8rem}
+  body.role-member .toast{bottom:calc(4.4rem + env(safe-area-inset-bottom))}
+  /* walkthrough sits under the header on phones so the bottom nav stays reachable */
+  #wtBar{top:calc(var(--shell-h,96px) + .35rem);bottom:auto;left:.4rem;right:.4rem;width:auto;transform:none;padding:.55rem .7rem;grid-template-columns:1fr;gap:.35rem;border-radius:10px}
+  #wtBar .step{font-size:.6rem}
+  #wtBar .cap{font-size:.84rem;line-height:1.35}
+  #wtBar .ctl{justify-content:flex-end;gap:.3rem}
+  #wtBar .ctl button{padding:.2rem .5rem;font-size:.72rem;min-height:28px}
+  body.wt-active .stage{padding-bottom:0;padding-top:calc(var(--wtbar-h,0px) + .5rem)}
+  body.wt-active .toast{bottom:1rem}
+  body.wt-active.role-member .toast{bottom:calc(4.4rem + env(safe-area-inset-bottom))}
+  #wtStart{padding:.75rem;align-items:center}
+  #wtStart .box{padding:1.1rem 1rem;border-radius:14px;gap:.7rem}
+  #wtStart h2{font-size:1.2rem}
+  #wtStart p{font-size:.85rem}
+  #wtStart .tiny{font-size:.7rem}
+  /* while the walkthrough runs, collapse the chrome so the app itself has the screen */
+  body.wt-active .roles, body.wt-active #btnDemo, body.wt-active #btnReset, body.wt-active .brand .tag{display:none}
+  body.wt-active .shell .in{padding:.25rem .6rem}
+  body.wt-active .shell .tools button{min-height:28px}
+  body.wt-active #wtBar{grid-template-columns:1fr auto;gap:.15rem .5rem;padding:.45rem .6rem .5rem;align-items:start}
+  body.wt-active #wtBar .step{font-size:.56rem;letter-spacing:.06em}
+  body.wt-active #wtBar .cap{font-size:.8rem;line-height:1.3}
+  body.wt-active #wtBar .ctl{flex-direction:column;gap:.2rem}
+  body.wt-active #wtBar .ctl button{width:30px;height:30px;min-height:0;padding:0;font-size:.8rem;line-height:1;border-radius:6px}
+  body.wt-active #wtBar .prog{margin-top:.2rem}
+  body.wt-active .wallet-top{padding:.6rem 1rem .7rem}
+  body.wt-active .balance{font-size:2.2rem}
+  #wtCursor{width:22px;height:22px}
+  /* 44px touch targets */
+  .btn.sm{min-height:44px;padding:.45rem .85rem}
+  .wallet-top .who select,.chead select{min-height:40px}
+  td input,td select{min-height:44px}
+  .wallet-body a,.card a,.cbody a{display:inline-flex;align-items:center;min-height:44px}
+  .check{min-height:44px;align-items:center}
+  .check input{margin-top:0}
+  .abody th,.abody td{padding:.5rem .55rem}
+}
+@media (max-width:380px){ .roles button{font-size:.78rem} .balance{font-size:2.3rem} }
+</style>
+<script>
+/* ===================== MOBILE PLUMBING ===================== */
+(function(){
+  const root=document.documentElement, shell=document.querySelector('.shell');
+  const mq=window.matchMedia('(max-width:640px)');
+  function measure(){ root.style.setProperty('--shell-h', shell.getBoundingClientRect().height+'px'); root.style.setProperty('--wtbar-h', bar.classList.contains('on') ? bar.getBoundingClientRect().height+'px' : '0px'); }
+  if('ResizeObserver' in window){ const ro=new ResizeObserver(measure); ro.observe(shell); ro.observe(bar); } else { window.addEventListener('resize',measure); }
+  measure();
+  function labels(){ const small=mq.matches; const w=document.getElementById('btnWalk'), d=document.getElementById('btnDemo'); if(w) w.textContent = WT.running ? (small?'■ Stop':'■ Stop walkthrough') : (small?'▶ Tour':'▶ Walkthrough'); if(d) d.textContent = small?'Sample':'Sample data'; const P=document.getElementById('wtPause'),N=document.getElementById('wtNext'),X=document.getElementById('wtExit'); if(small){ P.textContent=WT.paused?'▶':'⏸'; P.title=WT.paused?'Resume':'Pause'; N.textContent='⏭'; N.title='Next step'; X.textContent='✕'; X.title='Exit'; } else { P.textContent=WT.paused?'Resume':'Pause'; N.textContent='Next'; X.textContent='Exit'; } }
+  mq.addEventListener ? mq.addEventListener('change',labels) : mq.addListener(labels);
+  labels();
+  // keep body role class in sync and refresh labels whenever the page re-renders
+  const _render=render; window.render=function(){ _render(); document.body.classList.remove('role-start','role-member','role-counter','role-retailer','role-admin'); document.body.classList.add('role-'+S.ui.role); labels(); measure(); };
+  const _run=runWalkthrough; window.runWalkthrough=async function(from){ await _run(from); labels(); measure(); };
+  const _end=endWalkthrough; window.endWalkthrough=function(){ _end(); labels(); measure(); };
+  document.getElementById('wtPause').addEventListener('click', ()=>setTimeout(labels,0));
+  document.getElementById('wtNext').addEventListener('click', ()=>setTimeout(labels,0));
+  render();
+})();
+</script>
+<style>
+/* ===== two-device handoff + guidance ===== */
+#nextup{position:fixed;left:50%;transform:translateX(-50%);bottom:1rem;z-index:24;max-width:min(680px,calc(100vw - 1.6rem));
+ background:var(--teal);color:var(--teal-ink);border:1px solid rgba(185,230,117,.35);border-radius:12px;
+ padding:.6rem .8rem;display:none;gap:.7rem;align-items:center;box-shadow:0 18px 44px -18px rgba(0,0,0,.6)}
+#nextup.on{display:flex}
+#nextup .np{flex:1;min-width:0;font-size:.9rem;line-height:1.4}
+#nextup .np b{color:var(--lime-2)}
+#nextup button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:7px;
+ padding:.25rem .55rem;cursor:pointer;font-size:.75rem;min-height:32px;flex:none}
+#nextup button:hover{background:rgba(255,255,255,.16)}
+body.role-member #nextup{bottom:calc(4.6rem + env(safe-area-inset-bottom))}
+/* the strip must never sit on top of anything tappable — it reserves its own space */
+body.guide-on .stage{padding-bottom:calc(var(--guide-h,0px) + 1rem)}
+@media (max-width:640px){
+ body.guide-on .wallet-body{padding-bottom:calc(5.2rem + var(--guide-h,0px) + env(safe-area-inset-bottom))}
+ body.guide-on .cbody,body.guide-on .abody{padding-bottom:calc(.9rem + var(--guide-h,0px))}
+ body.guide-on .phone,body.guide-on .tablet{min-height:0}
+}
+body.wt-active #nextup{display:none !important}
+@media (max-width:640px){#nextup{left:.6rem;right:.6rem;transform:none;max-width:none;padding:.5rem .6rem}#nextup .np{font-size:.82rem}
+ #nextup button{min-height:44px;padding:.3rem .7rem}}
+
+.handoff{display:grid;justify-items:center;gap:.7rem;padding:1rem;background:#fff;border-radius:14px;border:1px solid var(--line)}
+.handoff #claimqr img,.handoff #claimqr canvas{display:block}
+.handoff .hcode{font-family:"IBM Plex Mono",monospace;font-size:1.3rem;letter-spacing:.12em;font-weight:500;color:#14302C}
+.handoff .hnote{font-size:.8rem;color:#4A6660;text-align:center;max-width:34ch}
+.scanbox{display:grid;gap:.7rem;padding:1rem;border:1px dashed var(--line);border-radius:12px;background:var(--surface-2)}
+.scanbox .lead{font-weight:600}
+</style>
+<script>
+/* ============ CROSS-DEVICE HANDOFF (no server) =====================
+   The member's QR is a URL carrying who they are. The counter opens it.
+   After credits are issued the counter shows a claim QR the member's
+   own camera opens, which applies the credits on their device.
+   In the real product this happens over the network; offline we pass
+   it device-to-device by QR.                                        */
+function b64e(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+function b64d(s){ try{ s=s.replace(/-/g,'+').replace(/_/g,'/'); return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(e){ return null; } }
+function appOrigin(){ return location.origin + location.pathname; }
+
+function visitLink(m){ const t=liveToken(m.id)||issueToken(m.id);
+  return appOrigin()+'?v='+b64e({i:m.id,n:m.displayName,no:m.memberNo,s:m.shortCode,t:t.token}); }
+function claimLink(tx){ const c=category(tx.categoryId);
+  return appOrigin()+'?c='+b64e({k:tx.id,m:tx.memberId,n:member(tx.memberId).displayName,rc:tx.rc,cat:c.name,q:tx.qty,u:c.unit,kg:Math.round(tx.kg)}); }
+
+/* a member who arrived by QR from another device */
+function ensureVisitor(p){
+  let m=S.members.find(x=>x.id===p.i) || S.members.find(x=>x.memberNo===p.no);
+  if(!m){ m={ id:p.i, memberNo:p.no, displayName:p.n, email:'', mobile:'', postcode:'', walletType:'personal',
+      status:'active', marketingOptIn:false, shortCode:p.s, source:'visiting', joinedAt:now(), visiting:true };
+    S.members.push(m); }
+  let t=S.tokens.find(x=>x.token===p.t);
+  if(!t){ t={ id:uid('T'), memberId:m.id, token:p.t, issuedAt:now(), expiresAt:now()+S.settings.tokenMinutes*60000, usedAt:null };
+    S.tokens.push(t); }
+  else if(t.usedAt || t.expiresAt<=now()){ t.usedAt=null; t.expiresAt=now()+S.settings.tokenMinutes*60000; }
+  save(); return {m,t};
+}
+function applyClaim(p){
+  S.claimed = S.claimed || [];
+  if(S.claimed.includes(p.k)) return { ok:false, msg:'Those credits are already in your wallet.' };
+  let m = S.members.find(x=>x.id===p.m) || (S.ui.memberId ? member(S.ui.memberId) : null) || S.members[0];
+  if(!m) return { ok:false, msg:'Join first, then scan the counter code.' };
+  ledgerAdd(m.id,'EARN',p.rc,'Handoff',p.k, p.cat+' × '+p.q+(p.u==='kg'?' kg':''), 'counter');
+  S.claimed.push(p.k);
+  if(!S.transactions.some(t=>t.id===p.k)){
+    const cat=S.categories.find(c=>c.name===p.cat)||S.categories[0];
+    S.transactions.push({ id:p.k, at:now(), memberId:m.id, facilityId:'F1', operatorId:'O1', categoryId:cat.id,
+      qty:p.q, baseRC:p.rc, campaignId:null, mult:1, rc:p.rc, kg:p.kg||0, status:'verified', flagReason:'', note:'via handoff' });
+  }
+  save(); return { ok:true, memberId:m.id, rc:p.rc, cat:p.cat };
+}
+
+/* ---- read the URL once on load ---- */
+(function handleUrl(){
+  const q=new URLSearchParams(location.search);
+  const clean=()=>history.replaceState(null,'',appOrigin()+(q.get('explore')?'?explore=1':''));
+  if(q.get('v')){
+    const p=b64d(q.get('v'));
+    if(p&&p.i){ const {t}=ensureVisitor(p);
+      Object.assign(S.ui,{role:'counter',ctab:'scan',counterMember:{memberId:p.i,token:t.token,at:now()},counterCat:null,counterQty:1,counterResult:null});
+      save(); clean(); window.__flash={msg:'QR scanned — '+p.n+' is loaded at the counter',kind:'ok'}; }
+  } else if(q.get('c')){
+    const p=b64d(q.get('c'));
+    if(p&&p.k){ const r=applyClaim(p);
+      Object.assign(S.ui,{role:'member',wtab:'home'});
+      if(r.ok){ S.ui.memberId=r.memberId; S.ui.landed={memberId:r.memberId, rc:p.rc, cat:p.cat, qty:p.q, kg:p.kg||0, id:p.k}; }
+      save(); clean(); window.__flash={msg: r.ok? ('+'+p.rc+' RC added to your wallet') : r.msg, kind: r.ok?'ok':'bad'}; }
+  }
+})();
+
+/* ---- "what to try next" guidance ---- */
+const NEXT=document.createElement('div');
+NEXT.id='nextup'; NEXT.innerHTML='<div class="np"></div><button type="button" id="nuGo" hidden></button><button type="button" id="nuHide">Hide</button>';
+document.body.appendChild(NEXT);
+let guideOff=false; try{ guideOff = localStorage.getItem('rc-guide-off')==='1'; }catch(e){}
+document.getElementById('nuHide').addEventListener('click',()=>{ guideOff=true; try{localStorage.setItem('rc-guide-off','1');}catch(e){} NEXT.classList.remove('on'); syncGuideSpace(); });
+document.getElementById('nuGo').addEventListener('click',()=>{ const f=NEXT.__go; if(f) f(); });
+
+function guidance(){
+  const u=S.ui, m=u.memberId?member(u.memberId):null;
+  if(u.role==='member'){
+    if(!m) return {t:'Start here — create a wallet. It takes a name and an email, nothing else.'};
+    if(u.wtab!=='qr' && balance(m.id)===0 && !S.transactions.some(t=>t.memberId===m.id))
+      return {t:'Next: tap <b>Show my QR</b>, then scan it with another phone — or use the button under the QR to open the counter on this screen.',go:['Show my QR',()=>ui({wtab:'qr'})]};
+    const off=activeOffers().sort((a,b)=>a.rcCost-b.rcCost);
+    const can=off.filter(o=>o.rcCost<=balance(m.id));
+    if(can.length && u.wtab!=='offers' && u.wtab!=='rewards')
+      return {t:'You have enough credits. Next: open <b>Offers</b> and redeem one.',go:['Offers',()=>ui({wtab:'offers'})]};
+    if(u.wtab==='rewards' && S.redemptions.some(r=>r.memberId===m.id&&r.status==='issued'))
+      return {t:'Now switch to the <b>Store</b> page — your code is already waiting to be checked.',go:['Store',()=>setRole('retailer')]};
+    if(balance(m.id)>0 && u.wtab!=='offers' && !can.length)
+      return {t:'Credits are in. Recycle a couple more items at the counter to unlock a reward.'};
+    return null;
+  }
+  if(u.role==='counter'){
+    if(u.counterResult) return {t:'Credits issued. If the member is on another device, have them scan the code above. Otherwise switch back to <b>Customer</b>.',go:['Customer',()=>setRole('member')]};
+    if(u.counterMember && !u.counterCat) return {t:'Pick what they brought in, set the quantity, then <b>Issue credits</b>.'};
+    if(u.counterMember) return {t:'Set the quantity and tap <b>Issue credits</b>. Staff never type a credit amount.'};
+    return {t:'Load a member: scan their QR with this device&rsquo;s camera, or tap one of the members already showing a QR.'};
+  }
+  if(u.role==='retailer'){
+    if(u.rtab==='numbers') return {t:'This is what a store gets each month: every code traced to a sale, and what the rewards cost. <b>Download CSV</b> takes it with you.'};
+    if(u.retailerCheck && u.retailerCheck.status==='valid') return {t:'Tap <b>Mark as used</b> to complete the redemption. Add a sale amount if you want it attributed.'};
+    const pend=S.redemptions.filter(r=>r.status==='issued');
+    if(pend.length) return {t:'A code is waiting — it is already filled in. Tap <b>Check</b>.'};
+    return {t:'No live codes yet. Redeem an offer on the Customer side first — or open <b>Your numbers</b> to see a month of store activity.',go:['Customer',()=>setRole('member')]};
+  }
+  if(u.role==='admin'){
+    if(S.transactions.some(t=>t.status==='flagged')) return {t:'There is a held transaction in the <b>Review queue</b> — approve or reject it with a reason.',go:['Review queue',()=>ui({atab:'review'})]};
+    return {t:'Everything you just did is here: transactions, redemptions, the ledger and the audit log.'};
+  }
+  return null;
+}
+function syncGuideSpace(){
+  const on=NEXT.classList.contains('on');
+  document.documentElement.style.setProperty('--guide-h', on ? (NEXT.getBoundingClientRect().height+14)+'px' : '0px');
+  document.body.classList.toggle('guide-on', on);
+}
+function paintGuide(){
+  if(guideOff || WT.running){ NEXT.classList.remove('on'); syncGuideSpace(); return; }
+  const g=guidance();
+  if(!g){ NEXT.classList.remove('on'); syncGuideSpace(); return; }
+  NEXT.querySelector('.np').innerHTML=g.t;
+  const b=document.getElementById('nuGo');
+  if(g.go){ b.hidden=false; b.textContent=g.go[0]; NEXT.__go=()=>{ g.go[1](); }; } else { b.hidden=true; NEXT.__go=null; }
+  NEXT.classList.add('on');
+  syncGuideSpace();
+}
+
+/* wrap render so guidance and handoff QR stay in sync */
+(function(){
+  const _r=window.render;
+  window.render=function(){ _r();
+    paintGuide();
+    const box=document.getElementById('claimqr');
+    if(box && S.ui.counterResult && S.ui.counterResult.tx){
+      box.innerHTML='';
+      const url=claimLink(S.ui.counterResult.tx);
+      if(window.QRCode) new QRCode(box,{text:url,width:172,height:172,correctLevel:QRCode.CorrectLevel.M,colorDark:'#14302C',colorLight:'#FFFFFF'});
+      else box.innerHTML='<div class="mono" style="font-size:.65rem;max-width:180px;word-break:break-all;color:#14302C">'+esc(url)+'</div>';
+    }
+  };
+  if('ResizeObserver' in window){ new ResizeObserver(()=>syncGuideSpace()).observe(NEXT); }
+  render();
+  if(window.__flash){ toast(window.__flash.msg, window.__flash.kind); window.__flash=null; }
+})();
+</script>
+<style>
+/* ===== start screen ===== */
+body.role-start .roles,body.role-start .note,body.role-start #btnDemo,body.role-start #btnReset{display:none}
+body.role-start .stage{padding:0;max-width:none}
+body.role-start #btnWalk{display:none}
+.start{min-height:calc(100vh - var(--shell-h,52px));min-height:calc(100dvh - var(--shell-h,52px));background:var(--teal);color:var(--teal-ink);display:grid;align-content:center;justify-items:center;padding:2rem 1rem 2.5rem;gap:1.6rem}
+.start .hero{max-width:640px;text-align:center;display:grid;gap:.8rem}
+.start .hero h1{color:#fff;font-size:clamp(1.7rem,5.5vw,3rem);letter-spacing:-.02em;font-weight:800}
+.start .hero p{color:var(--teal-muted);font-size:1.02rem;max-width:52ch;margin:0 auto}
+.start .hero .eyebrow{color:var(--lime-2)}
+.paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;width:100%;max-width:960px}
+.path{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.2rem 1.1rem;text-align:left;color:#fff;cursor:pointer;display:grid;gap:.35rem;align-content:start;min-height:132px;transition:border-color .15s,background .15s;font:inherit}
+.path:hover,.path:focus-visible{border-color:var(--lime);background:rgba(185,230,117,.09);outline:none}
+.path .pk{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--lime-2)}
+.path .pn{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.3rem;line-height:1.1}
+.path .pd{color:var(--teal-muted);font-size:.9rem}
+.path .go{margin-top:.4rem;color:var(--lime);font-weight:600;font-size:.9rem}
+.start .foot{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;justify-content:center}
+.start .foot .btn.ghost{color:var(--teal-ink);border-color:rgba(255,255,255,.3)}
+.start .foot a{color:var(--teal-muted);font-size:.9rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.start .fine{color:var(--teal-muted);font-size:.74rem;text-align:center;max-width:60ch}
+@media (max-width:760px){.paths{grid-template-columns:1fr}.path{min-height:0;padding:1rem}.start{padding:1.4rem 1rem 2rem;gap:1.2rem;align-content:start}.start .hero p{font-size:.95rem}}
+
+/* ===== retailer numbers ===== */
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}
+@media (max-width:640px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+select[data-action="rmonth"]{max-width:240px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.8rem .9rem;min-width:0}
+.tile .tv{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.6rem;letter-spacing:-.02em;line-height:1.1}
+.tile .tl{font-size:.78rem;color:var(--ink-2);margin-top:.2rem}
+.caveat{background:var(--warn-bg);color:var(--ink);border-left:3px solid var(--warn);border-radius:8px;padding:.6rem .8rem}
+table.numbers tfoot td{border-top:2px solid var(--line)}
+.rlist{display:none}
+@media (max-width:640px){ .rlist{display:grid;gap:.4rem} .rlist+.tw{display:none} }
+.ritem{display:flex;justify-content:space-between;gap:.8rem;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem}
+.ritem .rl{min-width:0;flex:1}.ritem .rr{text-align:right;flex:none}.ritem.total{background:var(--surface-2)}
+.row.wrap{flex-wrap:wrap;gap:.5rem}
+
+/* ===== member progress + impact ===== */
+.progress-card{display:grid;gap:.6rem}
+.progress-card .big{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.02em;white-space:nowrap}
+.progress-card .big small{font-size:.75rem;font-weight:500;color:var(--ink-2)}
+.pbar{height:10px;border-radius:999px;background:var(--surface-3);overflow:hidden}
+.pbar span{display:block;height:100%;background:linear-gradient(90deg,var(--lime),var(--accent));border-radius:999px;transition:width .5s ease}
+.impact-card{background:var(--teal);color:var(--teal-ink);border:0;display:grid;gap:.15rem}
+.impact-card .eyebrow{color:var(--lime-2)}
+.impact-card .big{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:2.2rem;letter-spacing:-.03em;color:#fff;line-height:1}
+.impact-card .big small{font-size:1rem;font-weight:500;color:var(--teal-muted)}
+.impact-card .eq{color:var(--teal-muted);font-size:.9rem}
+.nudge{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}.nudge span{flex:1;min-width:0}
+
+/* ===== credits landed ===== */
+#landed{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;padding:1rem;background:rgba(6,20,18,.55);backdrop-filter:blur(3px);cursor:pointer}
+#landed.on{display:flex}
+#landed .lbox{background:var(--lime);color:var(--accent-ink);border-radius:22px;padding:1.6rem 1.4rem;max-width:380px;width:100%;text-align:center;display:grid;gap:.4rem;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+#landed .lrc{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:3.4rem;letter-spacing:-.04em;line-height:1}
+#landed .lrc small{font-size:1.2rem;font-weight:700}
+#landed .lt{font-weight:600;font-size:1.05rem}
+#landed .ld{font-size:.88rem;opacity:.85}
+#landed .lk{font-size:.78rem;opacity:.7;margin-top:.4rem}
+@media (prefers-reduced-motion:no-preference){#landed.on .lbox{animation:land .45s cubic-bezier(.2,.9,.3,1.2)}@keyframes land{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}}
+</style>
+<script>
+document.getElementById('brandHome').addEventListener('click', ()=>{ if(WT.running){ WT.abort=true; } setRole('start'); });
+
+/* ===================== CSV ===================== */
+function downloadCSV(text, name){
+  try{ const blob=new Blob(['﻿'+text],{type:'text/csv;charset=utf-8'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ a.remove(); URL.revokeObjectURL(url); },800); toast('CSV ready — '+name,'ok'); }
+  catch(e){ toast('Could not build the CSV on this browser.','bad'); }
+}
+
+/* ===================== CREDITS LANDED ===================== */
+const LAND=document.createElement('div'); LAND.id='landed'; LAND.setAttribute('role','status'); document.body.appendChild(LAND);
+let landTimer=null;
+function hideLanded(){ LAND.classList.remove('on'); if(landTimer){ clearTimeout(landTimer); landTimer=null; } }
+LAND.addEventListener('click', hideLanded);
+function showLanded(l){
+  LAND.innerHTML=`<div class="lbox"><div class="lrc">+${l.rc}<small> RC</small></div><div class="lt">Credits landed</div><div class="ld">${esc(l.cat)} × ${l.qty}${l.kg?` · ${l.kg} kg kept out of landfill`:''}</div><div class="lk">Tap anywhere to continue</div></div>`;
+  LAND.classList.add('on'); if(landTimer) clearTimeout(landTimer); landTimer=setTimeout(hideLanded, 4500);
+}
+(function(){
+  const _r=window.render;
+  window.render=function(){ _r();
+    const l=S.ui.landed;
+    if(l && WT.running){ S.ui.landed=null; save(); }
+    else if(l && S.ui.role==='member' && S.ui.memberId===l.memberId){ S.ui.landed=null; save(); showLanded(l); }
+  };
+})();
+
+/* ===================== INSTALL TO HOME SCREEN ===================== */
+(function(){
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#123A36"/><circle cx="256" cy="256" r="150" fill="none" stroke="#B9E675" stroke-width="34"/><path d="M256 150v212M180 226l76-76 76 76" fill="none" stroke="#B9E675" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const icon='data:image/svg+xml;utf8,'+encodeURIComponent(svg);
+  const manifest={ name:'Recycle Credits', short_name:'Recycle Credits', start_url: location.pathname+'?explore=1', display:'standalone', background_color:'#123A36', theme_color:'#123A36',
+    icons:[{src:icon,sizes:'512x512',type:'image/svg+xml',purpose:'any'}] };
+  const link=document.createElement('link'); link.rel='manifest'; link.href='data:application/manifest+json,'+encodeURIComponent(JSON.stringify(manifest)); document.head.appendChild(link);
+  const ti=document.createElement('link'); ti.rel='apple-touch-icon'; ti.href=icon; document.head.appendChild(ti);
+  const fi=document.createElement('link'); fi.rel='icon'; fi.href=icon; document.head.appendChild(fi);
+})();
+render();
+</script>
+
+</body>
+</html>
